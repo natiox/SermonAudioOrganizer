@@ -44,7 +44,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AccountModels.cs" />
     <Compile Include="Location.cs" />
     <Compile Include="Media.cs" />
     <Compile Include="Preacher.cs" />

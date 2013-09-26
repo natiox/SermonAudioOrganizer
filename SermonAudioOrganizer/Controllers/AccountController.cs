@@ -9,7 +9,7 @@ using DotNetOpenAuth.AspNet;
 using Microsoft.Web.WebPages.OAuth;
 using WebMatrix.WebData;
 using SermonAudioOrganizer.Filters;
-using SermonAudioOrganizer.Domain;
+using SermonAudioOrganizer.Models;
 
 namespace SermonAudioOrganizer.Controllers
 {

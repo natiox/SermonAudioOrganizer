@@ -1,0 +1,76 @@
+﻿@model SermonAudioOrganizer.Domain.Sermon
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Sermon</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Title)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Title)
+            @Html.ValidationMessageFor(model => model.Title)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.RecordingDate)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.RecordingDate)
+            @Html.ValidationMessageFor(model => model.RecordingDate)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Topic)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Topic)
+            @Html.ValidationMessageFor(model => model.Topic)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Comment)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Comment)
+            @Html.ValidationMessageFor(model => model.Comment)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.SeriesInstallment)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.SeriesInstallment)
+            @Html.ValidationMessageFor(model => model.SeriesInstallment)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.SectionIndex)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.SectionIndex)
+            @Html.ValidationMessageFor(model => model.SectionIndex)
+        </div>
+
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

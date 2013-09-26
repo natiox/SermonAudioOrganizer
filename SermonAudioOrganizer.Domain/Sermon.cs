@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 
@@ -37,4 +38,15 @@ namespace SermonAudioOrganizer.Domain
 
         public List<Media> SermonMedia { get; set; }
     }
+
+    public class SermonContext : DbContext
+    {
+        public DbSet<Sermon> Sermons { get; set; }
+        public DbSet<Preacher> Preachers { get; set; }
+        public DbSet<Media> Medias { get; set; }
+        public DbSet<Series> Serieses { get; set; }
+        public DbSet<Section> Sections { get; set; }
+        public DbSet<Location> Locations { get; set; }
+    }
 }
+

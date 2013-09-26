@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Globalization;
 
-namespace SermonAudioOrganizer.Domain
+namespace SermonAudioOrganizer.Models
 {
     public class UsersContext : DbContext
     {
