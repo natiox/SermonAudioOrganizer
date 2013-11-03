@@ -6,11 +6,13 @@ using System.Text;
 
 namespace SermonAudioOrganizer.Domain
 {
-    public class Location
+    public class Media
     {
         [Key]
         public int Id { get; set; }
 
         public string Name { get; set; }
+
+        public MediaType Type { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿@model SermonAudioOrganizer.Domain.Sermon
+﻿@model SermonAudioOrganizer.Models.SermonEditViewModel
 
 @{
     ViewBag.Title = "Create";
@@ -11,7 +11,7 @@
     @Html.ValidationSummary(true)
 
     <fieldset>
-        <legend>Sermon</legend>
+        <legend>SermonEditViewModel</legend>
 
         <div class="editor-label">
             @Html.LabelFor(model => model.Title)
@@ -46,11 +46,43 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.SeriesInstallment)
+            @Html.LabelFor(model => model.LocationId)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.SeriesInstallment)
-            @Html.ValidationMessageFor(model => model.SeriesInstallment)
+            @Html.EditorFor(model => model.LocationId)
+            @Html.ValidationMessageFor(model => model.LocationId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.PreacherId)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.PreacherId)
+            @Html.ValidationMessageFor(model => model.PreacherId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.SeriesId)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.SeriesId)
+            @Html.ValidationMessageFor(model => model.SeriesId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.SectionId)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.SectionId)
+            @Html.ValidationMessageFor(model => model.SectionId)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.SeriesIndex)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.SeriesIndex)
+            @Html.ValidationMessageFor(model => model.SeriesIndex)
         </div>
 
         <div class="editor-label">

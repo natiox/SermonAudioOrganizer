@@ -6,19 +6,25 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using SermonAudioOrganizer.Domain;
+using SermonAudioOrganizer.Models;
 
 namespace SermonAudioOrganizer.Controllers
 {
     public class SermonController : Controller
     {
-        private SermonContext db = new SermonContext();
+        private ISermonRepository repository;
+
+        public SermonController()
+        {
+            repository = new SermonRepository(new SermonContext());
+        }
 
         //
         // GET: /Sermon/
 
         public ActionResult Index()
         {
-            return View(db.Sermons.ToList());
+            return View(repository.GetSermons());
         }
 
         //
@@ -26,7 +32,7 @@ namespace SermonAudioOrganizer.Controllers
 
         public ActionResult Details(int id = 0)
         {
-            Sermon sermon = db.Sermons.Find(id);
+            Sermon sermon = repository.GetSermonById(id);
             if (sermon == null)
             {
                 return HttpNotFound();
@@ -39,7 +45,11 @@ namespace SermonAudioOrganizer.Controllers
 
         public ActionResult Create()
         {
-            return View();
+            Sermon sermon = new Sermon();
+
+            SermonEditViewModel sermonEditViewModel = new SermonEditViewModel(sermon, repository.GetLocations(), repository.GetPreachers(), 
+                repository.GetSerieses(), repository.GetSections());
+            return View(sermonEditViewModel);
         }
 
         //
@@ -51,8 +61,8 @@ namespace SermonAudioOrganizer.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Sermons.Add(sermon);
-                db.SaveChanges();
+                repository.InsertSermon(sermon);
+                repository.Save();
                 return RedirectToAction("Index");
             }
 
@@ -64,12 +74,15 @@ namespace SermonAudioOrganizer.Controllers
 
         public ActionResult Edit(int id = 0)
         {
-            Sermon sermon = db.Sermons.Find(id);
+            Sermon sermon = repository.GetSermonById(id);
             if (sermon == null)
             {
                 return HttpNotFound();
             }
-            return View(sermon);
+
+            SermonEditViewModel sermonEditViewModel = new SermonEditViewModel(sermon, repository.GetLocations(), repository.GetPreachers(),
+                repository.GetSerieses(), repository.GetSections());
+            return View(sermonEditViewModel);
         }
 
         //
@@ -81,8 +94,8 @@ namespace SermonAudioOrganizer.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(sermon).State = EntityState.Modified;
-                db.SaveChanges();
+                repository.UpdateSermon(sermon);
+                repository.Save();
                 return RedirectToAction("Index");
             }
             return View(sermon);
@@ -93,7 +106,7 @@ namespace SermonAudioOrganizer.Controllers
 
         public ActionResult Delete(int id = 0)
         {
-            Sermon sermon = db.Sermons.Find(id);
+            Sermon sermon = repository.GetSermonById(id);
             if (sermon == null)
             {
                 return HttpNotFound();
@@ -108,16 +121,10 @@ namespace SermonAudioOrganizer.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Sermon sermon = db.Sermons.Find(id);
-            db.Sermons.Remove(sermon);
-            db.SaveChanges();
+            Sermon sermon = repository.GetSermonById(id);
+            repository.DeleteSermon(sermon.Id);
+            repository.Save();
             return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            db.Dispose();
-            base.Dispose(disposing);
         }
     }
 }
