@@ -32,8 +32,8 @@ namespace SermonAudioOrganizer.Models
 
                 LocationId = sermon.SermonLocation.Id;
 
-
-                SeriesIndex = sermon.SeriesIndex.ToString() + sermon.SeriesSubIndex.ToString();
+                SeriesIndex = sermon.SeriesIndex;
+                SeriesSubIndex = sermon.SeriesSubIndex;
 
                 SectionIndex = sermon.SectionIndex;
 
@@ -49,25 +49,32 @@ namespace SermonAudioOrganizer.Models
 
         public string Title { get; set; }
 
+        [DisplayName("Recording Date")]
+        [DataType(DataType.Date)]
         public DateTime RecordingDate { get; set; }
 
         public string Topic { get; set; }
 
+        [DataType(DataType.MultilineText)]
         public string Comment { get; set; }
 
         //Location - dropdown
+        [DisplayName("Location")]
         public int LocationId { get; set; }
         public IEnumerable<SelectListItem> Locations { get; set; }
 
         //Preacher - dropdown
+        [DisplayName("Preacher")]
         public int PreacherId { get; set; }
         public IEnumerable<SelectListItem> Preachers { get; set; }
 
         //Series - dropdown
+        [DisplayName("Series (i.e. Rightly Dividing The Gospels)")]
         public int SeriesId { get; set; }
         public IEnumerable<SelectListItem> Serieses { get; set; }
 
         //Sections - dropdown
+        [DisplayName("Section (i.e. Sermon on the Mount)")]
         public int SectionId { get; set; }
         public IEnumerable<SelectListItem> Sections { get; set; }
 
@@ -75,17 +82,24 @@ namespace SermonAudioOrganizer.Models
         /// i.e. 1, 2, 3, etc.
         /// </summary>
         [DisplayName("Series Index")]
-        public string SeriesIndex { get; set; }
+        public int? SeriesIndex { get; set; }
+
+        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Sub-index not valid.")]
+        [DisplayName("Series Sub-index (a, b, c, etc.)")]
+        public char? SeriesSubIndex { get; set; }
 
         /// <summary>
         /// i.e. 1, 2, 3, etc.
         /// </summary>
-        [DisplayName("Section Index")]
-        public int SectionIndex { get; set; }
+        [DisplayName("Section Index (a, b, c, d, etc.)")]
+        [MaxLength(1)]
+        public int? SectionIndex { get; set; }
 
         /// <summary>
         /// mp3s, Powerpoints, PDFs, etc.
         /// </summary>
+        //TODO: Figure out how to work out media.
+        public string File { get; set; }
         public List<Media> SermonMedia { get; set; }
     }
 }

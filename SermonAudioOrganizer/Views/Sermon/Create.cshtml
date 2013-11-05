@@ -49,7 +49,7 @@
             @Html.LabelFor(model => model.LocationId)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.LocationId)
+            @Html.DropDownListFor(model => model.LocationId, Model.Locations)
             @Html.ValidationMessageFor(model => model.LocationId)
         </div>
 
@@ -57,7 +57,7 @@
             @Html.LabelFor(model => model.PreacherId)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.PreacherId)
+            @Html.DropDownListFor(model => model.PreacherId, Model.Preachers)
             @Html.ValidationMessageFor(model => model.PreacherId)
         </div>
 
@@ -65,7 +65,7 @@
             @Html.LabelFor(model => model.SeriesId)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.SeriesId)
+            @Html.DropDownListFor(model => model.SeriesId, Model.Serieses)
             @Html.ValidationMessageFor(model => model.SeriesId)
         </div>
 
@@ -73,7 +73,7 @@
             @Html.LabelFor(model => model.SectionId)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.SectionId)
+            @Html.DropDownListFor(model => model.SectionId, Model.Sections)
             @Html.ValidationMessageFor(model => model.SectionId)
         </div>
 
@@ -86,11 +86,27 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.SectionIndex)
+            @Html.LabelFor(model => model.SeriesIndex)
         </div>
         <div class="editor-field">
-            @Html.EditorFor(model => model.SectionIndex)
-            @Html.ValidationMessageFor(model => model.SectionIndex)
+            @Html.EditorFor(model => model.SeriesIndex)
+            @Html.ValidationMessageFor(model => model.SeriesIndex)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.SeriesSubIndex)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.SeriesSubIndex)
+            @Html.ValidationMessageFor(model => model.SeriesSubIndex)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.File)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.File)
+            @Html.ValidationMessageFor(model => model.File)
         </div>
 
         <p>

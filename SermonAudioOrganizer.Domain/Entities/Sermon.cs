@@ -33,7 +33,7 @@ namespace SermonAudioOrganizer.Domain
         /// <summary>
         /// i.e. 1, 2, 3, etc.
         /// </summary>
-        public int SeriesIndex { get; set; }
+        public int? SeriesIndex { get; set; }
 
         /// <summary>
         /// a, b, c, etc.
@@ -48,7 +48,7 @@ namespace SermonAudioOrganizer.Domain
         /// <summary>
         /// i.e. part 40 of Sermon on the Mount section
         /// </summary>
-        public int SectionIndex { get; set; }
+        public int? SectionIndex { get; set; }
 
         /// <summary>
         /// mp3s, Powerpoints, PDFs, etc.
