@@ -11,26 +11,40 @@ namespace SermonAudioOrganizer.Models
 {
     public class SermonEditViewModel
     {
+        public SermonEditViewModel()
+        {
+
+        }
+
         public SermonEditViewModel(Sermon sermon, IEnumerable<Location> locations, IEnumerable<Preacher> preachers,
             IEnumerable<Series> serieses, IEnumerable<Section> sections)
         {
-            Locations = new SelectList(locations);
+            Locations = new SelectList(from l in locations
+                                       select new { Id = l.Id, LocationName = string.Format("{0} - {1}, {2}", l.Venue, l.City, l.State) },
+                                           "Id",
+                                           "LocationName",
+                                           (sermon.SermonLocation != null) ? sermon.SermonLocation.Id : 0);
 
-            Preachers = new SelectList(preachers);
+            Preachers = new SelectList(from p in preachers
+                                       select new { Id = p.Id, PreacherName = string.Format("{0} {1}", p.FirstName, p.LastName) },
+                                       "Id",
+                                       "PreacherName",
+                                       (sermon.SermonPreacher != null) ? sermon.SermonPreacher.Id : 0);
 
-            Serieses = new SelectList(serieses);
+            Serieses = new SelectList(serieses, "Id", "Title", (sermon.SermonSeries != null) ? sermon.SermonSeries.Id : 0);
 
-            Sections = new SelectList(sections);
+            Sections = new SelectList(sections, "Id", "Title", (sermon.SermonSection != null) ? sermon.SermonSection.Id : 0);
 
+            //Edit existing sermon
             if (sermon.Id > 0)
             {
                 Id = sermon.Id;
                 Title = sermon.Title;
-                RecordingDate = sermon.RecordingDate;
+
+                //TODO: This isn't getting set.
+                RecordingDate = sermon.RecordingDate.Date;
                 Topic = sermon.Topic;
                 Comment = sermon.Comment;
-
-                LocationId = sermon.SermonLocation.Id;
 
                 SeriesIndex = sermon.SeriesIndex;
                 SeriesSubIndex = sermon.SeriesSubIndex;
@@ -38,9 +52,18 @@ namespace SermonAudioOrganizer.Models
                 SectionIndex = sermon.SectionIndex;
 
                 SermonMedia = sermon.SermonMedia;
-                PreacherId = sermon.SermonPreacher.Id;
-                SeriesId = sermon.SermonSeries.Id;
-                SectionId = sermon.SermonSection.Id;
+
+                if (sermon.SermonLocation != null)
+                    LocationId = sermon.SermonLocation.Id;
+
+                if (sermon.SermonPreacher != null)
+                    PreacherId = sermon.SermonPreacher.Id;
+
+                if (sermon.SermonSeries != null)
+                    SeriesId = sermon.SermonSeries.Id;
+
+                if (sermon.SermonSection != null)
+                    SectionId = sermon.SermonSection.Id;
             }
         }
 
@@ -91,8 +114,7 @@ namespace SermonAudioOrganizer.Models
         /// <summary>
         /// i.e. 1, 2, 3, etc.
         /// </summary>
-        [DisplayName("Section Index (a, b, c, d, etc.)")]
-        [MaxLength(1)]
+        [DisplayName("Section Index")]
         public int? SectionIndex { get; set; }
 
         /// <summary>

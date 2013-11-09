@@ -531,14 +531,14 @@ table {
     border-collapse: collapse;
     border-spacing: 0;
     margin-top: 0.75em;
-    border: 0 none;
+    border: solid black;
 }
 
 th {
     font-size: 1.2em;
-    text-align: left;
-    border: none 0px;
-    padding-left: 0;
+    text-align: center;
+    border: 1px solid;
+    padding: 0.25em 2em 0.25em 0em;
 }
 
     th a {
@@ -579,7 +579,8 @@ th {
 
 td {
     padding: 0.25em 2em 0.25em 0em;
-    border: 0 none;
+    border: 1px solid;
+    text-align: center;
 }
 
 tr.pager td {
@@ -753,4 +754,14 @@ tr.pager td {
         footer p {
             margin: 0;
         }
+}
+
+.editor-label {
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.display-label {
+    font-weight: bold;
+    margin-top: 10px;
 }
