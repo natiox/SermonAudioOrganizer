@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<SermonAudioOrganizer.Domain.Sermon>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Sermon List";
 }
 
 <h2>Index</h2>
@@ -47,7 +47,7 @@
             @Html.DisplayFor(modelItem => item.Comment)
         </td>
         <td>
-            @item.SeriesIndex@item.SeriesSubIndex
+            @Html.DisplayFor(modelItem => item.SeriesIndex)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.SectionIndex)

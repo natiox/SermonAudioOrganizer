@@ -103,34 +103,6 @@ namespace SermonAudioOrganizer.Domain
             context.Entry(media).State = System.Data.EntityState.Modified;
         }
 
-
-        public IEnumerable<MediaType> GetMediaTypes()
-        {
-            return context.MediaTypes.ToList();
-        }
-
-        public MediaType GetMediaTypeById(int mediaTypeId)
-        {
-            return context.MediaTypes.Find(mediaTypeId);
-        }
-
-        public void InsertMediaType(MediaType mediaType)
-        {
-            context.MediaTypes.Add(mediaType);
-        }
-
-        public void DeleteMediaType(int mediaTypeId)
-        {
-            MediaType mediaTypeToDelete = context.MediaTypes.Find(mediaTypeId);
-            context.MediaTypes.Remove(mediaTypeToDelete);
-        }
-
-        public void UpdateMediaType(MediaType mediaType)
-        {
-            context.Entry(mediaType).State = System.Data.EntityState.Modified;
-        }
-
-
         public IEnumerable<Preacher> GetPreachers()
         {
             return context.Preachers.ToList();

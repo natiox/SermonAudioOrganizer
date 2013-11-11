@@ -25,13 +25,7 @@ namespace SermonAudioOrganizer.Domain
         void InsertMedia(Media media);
         void DeleteMedia(int mediaId);
         void UpdateMedia(Media media);
-
-        IEnumerable<MediaType> GetMediaTypes();
-        MediaType GetMediaTypeById(int mediaTypeId);
-        void InsertMediaType(MediaType mediaType);
-        void DeleteMediaType(int mediaTypeID);
-        void UpdateMediaType(MediaType mediaType);
-
+        
         IEnumerable<Preacher> GetPreachers();
         Preacher GetPreacherById(int preacherId);
         void InsertPreacher(Preacher preacher);

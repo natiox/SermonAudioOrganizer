@@ -47,7 +47,6 @@
     <Compile Include="Abstract\ISermonRepository.cs" />
     <Compile Include="Entities\Location.cs" />
     <Compile Include="Entities\Media.cs" />
-    <Compile Include="Entities\MediaType.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Entities\Preacher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

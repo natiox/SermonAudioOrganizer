@@ -39,6 +39,14 @@
         </div>
 
         <div class="editor-label">
+            @Html.LabelFor(model => model.Passages)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Passages)
+            @Html.ValidationMessageFor(model => model.Passages)
+        </div>
+
+        <div class="editor-label">
             @Html.LabelFor(model => model.Comment)
         </div>
         <div class="editor-field">
@@ -50,7 +58,7 @@
             @Html.LabelFor(model => model.LocationId)
         </div>
         <div class="editor-field">
-            @Html.DropDownListFor(model => model.LocationId, Model.Locations) @Html.ActionLink("Add Location", "Create", "Location")
+            @Html.DropDownListFor(model => model.LocationId, Model.Locations,"") @Html.ActionLink("Add Location", "Create", "Location")
             @Html.ValidationMessageFor(model => model.LocationId)
         </div>
 
@@ -58,7 +66,7 @@
             @Html.LabelFor(model => model.PreacherId)
         </div>
         <div class="editor-field">
-            @Html.DropDownListFor(model => model.PreacherId, Model.Preachers) @Html.ActionLink("Add Preacher", "Create", "Preacher")
+            @Html.DropDownListFor(model => model.PreacherId, Model.Preachers,"") @Html.ActionLink("Add Preacher", "Create", "Preacher")
             @Html.ValidationMessageFor(model => model.PreacherId)
         </div>
 
@@ -66,7 +74,7 @@
             @Html.LabelFor(model => model.SeriesId)
         </div>
         <div class="editor-field">
-            @Html.DropDownListFor(model => model.SeriesId, Model.Serieses) @Html.ActionLink("Add Series", "Create", "Series")
+            @Html.DropDownListFor(model => model.SeriesId, Model.Serieses,"") @Html.ActionLink("Add Series", "Create", "Series")
             @Html.ValidationMessageFor(model => model.SeriesId)
         </div>
 
@@ -79,18 +87,10 @@
         </div>
 
         <div class="editor-label">
-            @Html.LabelFor(model => model.SeriesSubIndex)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.SeriesSubIndex)
-            @Html.ValidationMessageFor(model => model.SeriesSubIndex)
-        </div>
-
-        <div class="editor-label">
             @Html.LabelFor(model => model.SectionId)
         </div>
         <div class="editor-field">
-            @Html.DropDownListFor(model => model.SectionId, Model.Sections) @Html.ActionLink("Add Section", "Create", "Section")
+            @Html.DropDownListFor(model => model.SectionId, Model.Sections,"") @Html.ActionLink("Add Section", "Create", "Section")
             @Html.ValidationMessageFor(model => model.SectionId)
         </div>
 
@@ -100,14 +100,6 @@
         <div class="editor-field">
             @Html.EditorFor(model => model.SectionIndex)
             @Html.ValidationMessageFor(model => model.SectionIndex)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.File)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.File)
-            @Html.ValidationMessageFor(model => model.File)
         </div>
 
         <p>

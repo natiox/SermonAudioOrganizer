@@ -20,20 +20,7 @@ namespace SermonAudioOrganizer.Controllers
         {
             return View(db.Serieses.ToList());
         }
-
-        //
-        // GET: /Series/Details/5
-
-        public ActionResult Details(int id = 0)
-        {
-            Series series = db.Serieses.Find(id);
-            if (series == null)
-            {
-                return HttpNotFound();
-            }
-            return View(series);
-        }
-
+        
         //
         // GET: /Series/Create
 

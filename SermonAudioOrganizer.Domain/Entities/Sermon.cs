@@ -15,7 +15,6 @@ namespace SermonAudioOrganizer.Domain
 
         public string Title { get; set; }
 
-
         [DisplayName("Recording Date")]
         [DataType(DataType.Date)]
         public DateTime RecordingDate { get; set; }
@@ -24,45 +23,42 @@ namespace SermonAudioOrganizer.Domain
 
         public string Comment { get; set; }
 
-        public Preacher SermonPreacher { get; set; }
+        public string Passages { get; set; }
 
-        public Location SermonLocation { get; set; }
+        public virtual Preacher SermonPreacher { get; set; }
+
+        public virtual Location SermonLocation { get; set; }
 
         /// <summary>
         /// i.e. Rightly Dividing the Gospels
         /// </summary>
         [DisplayName("Sermon Series")]
-        public Series SermonSeries { get; set; }
+        public virtual Series SermonSeries { get; set; }
 
         /// <summary>
-        /// i.e. 1, 2, 3, etc.
+        /// i.e. 1, 2, 3a, 3b, etc.
         /// </summary>
-        [DisplayName("Sermon Index")]
-        public int? SeriesIndex { get; set; }
-
-        /// <summary>
-        /// a, b, c, etc.
-        /// </summary>
-        [DisplayName("Sermon Sub-index")]
-        public char? SeriesSubIndex { get; set; }
+        [DisplayName("Series Index")]
+        [MaxLength(4)]
+        public string SeriesIndex { get; set; }
 
         /// <summary>
         /// i.e. Sermon on the Mount
         /// </summary>
         [DisplayName("Sermon Section")]
-        public Section SermonSection { get; set; }
+        public virtual Section SermonSection { get; set; }
 
         /// <summary>
         /// i.e. part 40 of Sermon on the Mount section
         /// </summary>
-        [DisplayName("Sermon Index")]
+        [DisplayName("Section Index")]
         public int? SectionIndex { get; set; }
 
         /// <summary>
         /// mp3s, Powerpoints, PDFs, etc.
         /// </summary>
         [DisplayName("Sermon Media")]
-        public List<Media> SermonMedia { get; set; }
+        public virtual List<Media> SermonMedia { get; set; }
     }
 }
 

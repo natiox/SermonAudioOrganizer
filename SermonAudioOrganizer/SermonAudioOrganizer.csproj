@@ -184,6 +184,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LocationController.cs" />
+    <Compile Include="Controllers\MediaController.cs" />
     <Compile Include="Controllers\PreacherController.cs" />
     <Compile Include="Controllers\SectionController.cs" />
     <Compile Include="Controllers\SeriesController.cs" />
@@ -326,6 +327,10 @@
     <Content Include="Views\Section\Edit.cshtml" />
     <Content Include="Views\Section\Delete.cshtml" />
     <Content Include="Views\Sermon\Edit.cshtml" />
+    <Content Include="Views\Media\Index.cshtml" />
+    <Content Include="Views\Media\Create.cshtml" />
+    <Content Include="Views\Media\Edit.cshtml" />
+    <Content Include="Views\Media\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

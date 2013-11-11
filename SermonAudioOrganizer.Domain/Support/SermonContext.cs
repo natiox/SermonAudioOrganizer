@@ -16,7 +16,6 @@ namespace SermonAudioOrganizer.Domain
         public DbSet<Sermon> Sermons { get; set; }
         public DbSet<Preacher> Preachers { get; set; }
         public DbSet<Media> Medias { get; set; }
-        public DbSet<MediaType> MediaTypes { get; set; }
         public DbSet<Series> Serieses { get; set; }
         public DbSet<Section> Sections { get; set; }
         public DbSet<Location> Locations { get; set; }

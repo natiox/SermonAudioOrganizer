@@ -35,19 +35,20 @@ namespace SermonAudioOrganizer.Models
 
             Sections = new SelectList(sections, "Id", "Title", (sermon.SermonSection != null) ? sermon.SermonSection.Id : 0);
 
+            RecordingDate = DateTime.Today;
+
             //Edit existing sermon
             if (sermon.Id > 0)
             {
                 Id = sermon.Id;
                 Title = sermon.Title;
 
-                //TODO: This isn't getting set.
                 RecordingDate = sermon.RecordingDate.Date;
                 Topic = sermon.Topic;
                 Comment = sermon.Comment;
+                Passages = sermon.Passages;
 
                 SeriesIndex = sermon.SeriesIndex;
-                SeriesSubIndex = sermon.SeriesSubIndex;
 
                 SectionIndex = sermon.SectionIndex;
 
@@ -74,42 +75,43 @@ namespace SermonAudioOrganizer.Models
 
         [DisplayName("Recording Date")]
         [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime RecordingDate { get; set; }
 
         public string Topic { get; set; }
+
+        public string Passages { get; set; }
 
         [DataType(DataType.MultilineText)]
         public string Comment { get; set; }
 
         //Location - dropdown
         [DisplayName("Location")]
-        public int LocationId { get; set; }
+        public int? LocationId { get; set; }
         public IEnumerable<SelectListItem> Locations { get; set; }
 
         //Preacher - dropdown
         [DisplayName("Preacher")]
-        public int PreacherId { get; set; }
+        public int? PreacherId { get; set; }
         public IEnumerable<SelectListItem> Preachers { get; set; }
 
         //Series - dropdown
         [DisplayName("Series (i.e. Rightly Dividing The Gospels)")]
-        public int SeriesId { get; set; }
+        public int? SeriesId { get; set; }
         public IEnumerable<SelectListItem> Serieses { get; set; }
 
         //Sections - dropdown
         [DisplayName("Section (i.e. Sermon on the Mount)")]
-        public int SectionId { get; set; }
+        public int? SectionId { get; set; }
         public IEnumerable<SelectListItem> Sections { get; set; }
 
         /// <summary>
-        /// i.e. 1, 2, 3, etc.
+        /// i.e. 1, 2, 3a, 3b, 3c, etc.
         /// </summary>
-        [DisplayName("Series Index")]
-        public int? SeriesIndex { get; set; }
-
-        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Sub-index not valid.")]
-        [DisplayName("Series Sub-index (a, b, c, etc.)")]
-        public char? SeriesSubIndex { get; set; }
+        [RegularExpression(@"^[0-9]+[a-zA-Z]*$", ErrorMessage = "Index not valid.")]
+        [DisplayName("Series Index (i.e. 1, 2, 3a, 3b)")]
+        [MaxLength(4)]
+        public string SeriesIndex { get; set; }
 
         /// <summary>
         /// i.e. 1, 2, 3, etc.
@@ -118,10 +120,9 @@ namespace SermonAudioOrganizer.Models
         public int? SectionIndex { get; set; }
 
         /// <summary>
-        /// mp3s, Powerpoints, PDFs, etc.
+        /// related files
         /// </summary>
-        //TODO: Figure out how to work out media.
-        public string File { get; set; }
+        [DisplayName("Media")]
         public List<Media> SermonMedia { get; set; }
     }
 }

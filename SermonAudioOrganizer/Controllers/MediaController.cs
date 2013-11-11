@@ -9,20 +9,20 @@ using SermonAudioOrganizer.Domain;
 
 namespace SermonAudioOrganizer.Controllers
 {
-    public class PreacherController : Controller
+    public class MediaController : Controller
     {
         private SermonContext db = new SermonContext();
 
         //
-        // GET: /Preacher/
+        // GET: /Media/
 
         public ActionResult Index()
         {
-            return View(db.Preachers.ToList());
+            return View(db.Medias.ToList());
         }
         
         //
-        // GET: /Preacher/Create
+        // GET: /Media/Create
 
         public ActionResult Create()
         {
@@ -30,73 +30,73 @@ namespace SermonAudioOrganizer.Controllers
         }
 
         //
-        // POST: /Preacher/Create
+        // POST: /Media/Create
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Preacher preacher)
+        public ActionResult Create(Media media)
         {
             if (ModelState.IsValid)
             {
-                db.Preachers.Add(preacher);
+                db.Medias.Add(media);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(preacher);
+            return View(media);
         }
 
         //
-        // GET: /Preacher/Edit/5
+        // GET: /Media/Edit/5
 
         public ActionResult Edit(int id = 0)
         {
-            Preacher preacher = db.Preachers.Find(id);
-            if (preacher == null)
+            Media media = db.Medias.Find(id);
+            if (media == null)
             {
                 return HttpNotFound();
             }
-            return View(preacher);
+            return View(media);
         }
 
         //
-        // POST: /Preacher/Edit/5
+        // POST: /Media/Edit/5
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Preacher preacher)
+        public ActionResult Edit(Media media)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(preacher).State = EntityState.Modified;
+                db.Entry(media).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(preacher);
+            return View(media);
         }
 
         //
-        // GET: /Preacher/Delete/5
+        // GET: /Media/Delete/5
 
         public ActionResult Delete(int id = 0)
         {
-            Preacher preacher = db.Preachers.Find(id);
-            if (preacher == null)
+            Media media = db.Medias.Find(id);
+            if (media == null)
             {
                 return HttpNotFound();
             }
-            return View(preacher);
+            return View(media);
         }
 
         //
-        // POST: /Preacher/Delete/5
+        // POST: /Media/Delete/5
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Preacher preacher = db.Preachers.Find(id);
-            db.Preachers.Remove(preacher);
+            Media media = db.Medias.Find(id);
+            db.Medias.Remove(media);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

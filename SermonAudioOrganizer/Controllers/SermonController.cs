@@ -19,6 +19,12 @@ namespace SermonAudioOrganizer.Controllers
             repository = new SermonRepository(new SermonContext());
         }
 
+        //TODO: WHEREYOUWERE - Need to work on method to add media.  Eventually, Ajax search would be nice.
+        public ActionResult AddMedia(int id = 0)
+        {
+            return View(repository.GetMedias());
+        }
+
         //
         // GET: /Sermon/
 
@@ -62,14 +68,14 @@ namespace SermonAudioOrganizer.Controllers
             Sermon sermon = new Sermon()
             {
                 Comment = sermonViewModel.Comment,
+                Passages = sermonViewModel.Passages,
                 RecordingDate = sermonViewModel.RecordingDate,
                 SectionIndex = sermonViewModel.SectionIndex,
                 SeriesIndex = sermonViewModel.SeriesIndex,
-                SeriesSubIndex = sermonViewModel.SeriesSubIndex,
-                SermonLocation = repository.GetLocationById(sermonViewModel.LocationId),
-                SermonPreacher = repository.GetPreacherById(sermonViewModel.PreacherId),
-                SermonSeries = repository.GetSeriesById(sermonViewModel.SeriesId),
-                SermonSection = repository.GetSectionById(sermonViewModel.SectionId),
+                SermonLocation = (sermonViewModel.LocationId != null) ? repository.GetLocationById(sermonViewModel.LocationId.Value) : null,
+                SermonPreacher = (sermonViewModel.PreacherId != null) ? repository.GetPreacherById(sermonViewModel.PreacherId.Value) : null,
+                SermonSeries = (sermonViewModel.SeriesId != null) ? repository.GetSeriesById(sermonViewModel.SeriesId.Value) : null,
+                SermonSection = (sermonViewModel.SectionId != null) ? repository.GetSectionById(sermonViewModel.SectionId.Value) : null,
                 Title = sermonViewModel.Title,
                 Topic = sermonViewModel.Topic
                 // TODO: SermonMedia = repository.GetMediaById(sermonViewModel.SermonMedia.Media
@@ -119,6 +125,9 @@ namespace SermonAudioOrganizer.Controllers
             if (sermon.Comment != sermonViewModel.Comment)
                 sermon.Comment = sermonViewModel.Comment;
 
+            if (sermon.Passages != sermonViewModel.Passages)
+                sermon.Passages = sermonViewModel.Passages;
+
             if (sermon.RecordingDate != sermonViewModel.RecordingDate)
                 sermon.RecordingDate = sermonViewModel.RecordingDate;
 
@@ -128,20 +137,17 @@ namespace SermonAudioOrganizer.Controllers
             if (sermon.SeriesIndex != sermonViewModel.SeriesIndex)
                 sermon.SeriesIndex = sermonViewModel.SeriesIndex;
 
-            if (sermon.SeriesSubIndex != sermonViewModel.SeriesSubIndex)
-                sermon.SeriesSubIndex = sermonViewModel.SeriesSubIndex;
-
             if (((sermon.SermonLocation != null) ? sermon.SermonLocation.Id : 0) != sermonViewModel.LocationId)
-                sermon.SermonLocation = repository.GetLocationById(sermonViewModel.LocationId);
+                sermon.SermonLocation = (sermonViewModel.LocationId != null) ? repository.GetLocationById(sermonViewModel.LocationId.Value) : null;
 
             if (((sermon.SermonPreacher != null) ? sermon.SermonPreacher.Id : 0) != sermonViewModel.PreacherId)
-               sermon.SermonPreacher = repository.GetPreacherById(sermonViewModel.PreacherId);
+               sermon.SermonPreacher = (sermonViewModel.PreacherId != null) ? repository.GetPreacherById(sermonViewModel.PreacherId.Value) : null;
 
             if (((sermon.SermonSeries != null) ? sermon.SermonSeries.Id : 0) != sermonViewModel.SeriesId)
-                sermon.SermonSeries = repository.GetSeriesById(sermonViewModel.SeriesId);
+                sermon.SermonSeries = (sermonViewModel.SeriesId != null) ? repository.GetSeriesById(sermonViewModel.SeriesId.Value) : null;
 
             if (((sermon.SermonSection != null) ? sermon.SermonSection.Id : 0) != sermonViewModel.SectionId)
-                sermon.SermonSection = repository.GetSectionById(sermonViewModel.SectionId);
+                sermon.SermonSection = (sermonViewModel.SectionId != null) ? repository.GetSectionById(sermonViewModel.SectionId.Value) : null;
 
                 //TODO: SermonMedia = repository.GetMediaById(sermonViewModel.SermonMedia.Media
 

@@ -20,20 +20,7 @@ namespace SermonAudioOrganizer.Controllers
         {
             return View(db.Sections.ToList());
         }
-
-        //
-        // GET: /Section/Details/5
-
-        public ActionResult Details(int id = 0)
-        {
-            Section section = db.Sections.Find(id);
-            if (section == null)
-            {
-                return HttpNotFound();
-            }
-            return View(section);
-        }
-
+        
         //
         // GET: /Section/Create
 
