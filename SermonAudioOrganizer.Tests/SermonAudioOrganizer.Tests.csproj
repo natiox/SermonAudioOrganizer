@@ -123,9 +123,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SermonAudioOrganizer\SermonAudioOrganizer.csproj">
+    <ProjectReference Include="..\SermonAudioOrganizer\SermonAudioOrganizer.Web.csproj">
       <Project>{6C427B42-D457-4FC4-9F89-03F7870FBBAB}</Project>
-      <Name>SermonAudioOrganizer</Name>
+      <Name>SermonAudioOrganizer.Web</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

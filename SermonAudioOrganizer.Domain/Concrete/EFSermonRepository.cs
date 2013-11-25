@@ -6,11 +6,14 @@ using System.Threading.Tasks;
 
 namespace SermonAudioOrganizer.Domain
 {
-    public class SermonRepository : ISermonRepository
+    /// <summary>
+    /// Entity Framework Sermon Repository
+    /// </summary>
+    public class EFSermonRepository : ISermonRepository
     {
         private SermonContext context;
 
-        public SermonRepository(SermonContext context)
+        public EFSermonRepository(SermonContext context)
         {
             this.context = context;
         }

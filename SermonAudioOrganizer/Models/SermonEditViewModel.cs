@@ -123,6 +123,6 @@ namespace SermonAudioOrganizer.Models
         /// related files
         /// </summary>
         [DisplayName("Media")]
-        public List<Media> SermonMedia { get; set; }
+        public IList<Media> SermonMedia { get; set; }
     }
 }

@@ -58,7 +58,7 @@ namespace SermonAudioOrganizer.Domain
         /// mp3s, Powerpoints, PDFs, etc.
         /// </summary>
         [DisplayName("Sermon Media")]
-        public virtual List<Media> SermonMedia { get; set; }
+        public virtual IList<Media> SermonMedia { get; set; }
     }
 }
 

@@ -58,7 +58,7 @@
             @Html.LabelFor(model => model.LocationId)
         </div>
         <div class="editor-field">
-            @Html.DropDownListFor(model => model.LocationId, Model.Locations,"") @Html.ActionLink("Add Location", "Create", "Location")
+            @Html.DropDownListFor(model => model.LocationId, Model.Locations, "") @Html.ActionLink("Add Location", "Create", "Location")
             @Html.ValidationMessageFor(model => model.LocationId)
         </div>
 
@@ -66,7 +66,7 @@
             @Html.LabelFor(model => model.PreacherId)
         </div>
         <div class="editor-field">
-            @Html.DropDownListFor(model => model.PreacherId, Model.Preachers,"") @Html.ActionLink("Add Preacher", "Create", "Preacher")
+            @Html.DropDownListFor(model => model.PreacherId, Model.Preachers, "") @Html.ActionLink("Add Preacher", "Create", "Preacher")
             @Html.ValidationMessageFor(model => model.PreacherId)
         </div>
 
@@ -74,7 +74,7 @@
             @Html.LabelFor(model => model.SeriesId)
         </div>
         <div class="editor-field">
-            @Html.DropDownListFor(model => model.SeriesId, Model.Serieses,"") @Html.ActionLink("Add Series", "Create", "Series")
+            @Html.DropDownListFor(model => model.SeriesId, Model.Serieses, "") @Html.ActionLink("Add Series", "Create", "Series")
             @Html.ValidationMessageFor(model => model.SeriesId)
         </div>
 
@@ -90,7 +90,7 @@
             @Html.LabelFor(model => model.SectionId)
         </div>
         <div class="editor-field">
-            @Html.DropDownListFor(model => model.SectionId, Model.Sections,"") @Html.ActionLink("Add Section", "Create", "Section")
+            @Html.DropDownListFor(model => model.SectionId, Model.Sections, "") @Html.ActionLink("Add Section", "Create", "Section")
             @Html.ValidationMessageFor(model => model.SectionId)
         </div>
 
@@ -101,6 +101,41 @@
             @Html.EditorFor(model => model.SectionIndex)
             @Html.ValidationMessageFor(model => model.SectionIndex)
         </div>
+
+        TODO: Nope, sermon is not created yet, so it has no ID.
+        <p>
+            @Html.ActionLink("Add Media", "AddMedia", new { sermonId = Model.Id })
+        </p>
+        @if (Model.SermonMedia != null)
+        {
+            <div>
+                <table>
+                    <tr>
+                        <th>Name
+                        </th>
+                        <th>Type
+                        </th>
+                        <th></th>
+                    </tr>
+
+                    @foreach (var media in Model.SermonMedia)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => media.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => media.Type)
+                            </td>
+                            <td>
+                                @Html.ActionLink("Remove Media", "RemoveMedia", new { sermonId = Model.Id, mediaId = media.Id }, null)
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+            </div>
+        }
 
         <p>
             <input type="submit" value="Create" />

@@ -16,13 +16,33 @@ namespace SermonAudioOrganizer.Controllers
 
         public SermonController()
         {
-            repository = new SermonRepository(new SermonContext());
+            repository = new EFSermonRepository(new SermonContext());
         }
 
-        //TODO: WHEREYOUWERE - Need to work on method to add media.  Eventually, Ajax search would be nice.
-        public ActionResult AddMedia(int id = 0)
+        public ActionResult AddMedia(int sermonId = 0)
         {
-            return View(repository.GetMedias());
+            AddMediaViewModel addMediaViewModel = new AddMediaViewModel() { SermonId = sermonId, AllMediaList = repository.GetMedias().ToList() };
+            return View(addMediaViewModel);
+        }
+
+        public ActionResult AddMediaToSermon(int mediaId = 0, int sermonId = 0)
+        {
+            AddMediaConfirmViewModel addMediaConfirmViewModel = new AddMediaConfirmViewModel() { SermonId = sermonId, MediaId = mediaId };
+            return View(addMediaConfirmViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult AddMediaToSermon(AddMediaConfirmViewModel addMediaConfirmViewModel)
+        {
+            repository.GetSermonById(addMediaConfirmViewModel.SermonId).SermonMedia.Add(repository.GetMediaById(addMediaConfirmViewModel.MediaId));
+            return RedirectToAction("Edit", new { id = addMediaConfirmViewModel.SermonId });
+        }
+        
+        [HttpPost]
+        public ActionResult RemoveMediaFromSermon(int mediaId = 0, int sermonId = 0)
+        {
+            repository.GetSermonById(sermonId).SermonMedia.Add(repository.GetMediaById(mediaId));
+            return View();
         }
 
         //
@@ -38,6 +58,7 @@ namespace SermonAudioOrganizer.Controllers
 
         public ActionResult Details(int id = 0)
         {
+            //TODO: Need search of various types.
             Sermon sermon = repository.GetSermonById(id);
             if (sermon == null)
             {

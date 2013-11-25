@@ -194,6 +194,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\AddMediaConfirmViewModel.cs" />
+    <Compile Include="Models\AddMediaViewModel.cs" />
     <Compile Include="Models\SermonEditViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -331,6 +333,8 @@
     <Content Include="Views\Media\Create.cshtml" />
     <Content Include="Views\Media\Edit.cshtml" />
     <Content Include="Views\Media\Delete.cshtml" />
+    <Content Include="Views\Sermon\AddMedia.cshtml" />
+    <Content Include="Views\Sermon\AddMediaToSermon.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

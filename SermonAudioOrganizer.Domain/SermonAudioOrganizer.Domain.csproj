@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abstract\ISermonRepository.cs" />
+    <Compile Include="Concrete\MemSermonRepository.cs" />
     <Compile Include="Entities\Location.cs" />
     <Compile Include="Entities\Media.cs" />
     <Compile Include="Migrations\Configuration.cs" />
@@ -54,7 +55,7 @@
     <Compile Include="Entities\Series.cs" />
     <Compile Include="Entities\Sermon.cs" />
     <Compile Include="Support\SermonContext.cs" />
-    <Compile Include="Concrete\SermonRepository.cs" />
+    <Compile Include="Concrete\EFSermonRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -58,7 +58,7 @@
             @Html.LabelFor(model => model.LocationId)
         </div>
         <div class="editor-field">
-            @Html.DropDownListFor(model => model.LocationId, Model.Locations,"") @Html.ActionLink("Add Location", "Create", "Location")
+            @Html.DropDownListFor(model => model.LocationId, Model.Locations, "") @Html.ActionLink("Add Location", "Create", "Location")
             @Html.ValidationMessageFor(model => model.LocationId)
         </div>
 
@@ -66,7 +66,7 @@
             @Html.LabelFor(model => model.PreacherId)
         </div>
         <div class="editor-field">
-            @Html.DropDownListFor(model => model.PreacherId, Model.Preachers,"") @Html.ActionLink("Add Preacher", "Create", "Preacher")
+            @Html.DropDownListFor(model => model.PreacherId, Model.Preachers, "") @Html.ActionLink("Add Preacher", "Create", "Preacher")
             @Html.ValidationMessageFor(model => model.PreacherId)
         </div>
 
@@ -74,7 +74,7 @@
             @Html.LabelFor(model => model.SeriesId)
         </div>
         <div class="editor-field">
-            @Html.DropDownListFor(model => model.SeriesId, Model.Serieses,"") @Html.ActionLink("Add Series", "Create", "Series")
+            @Html.DropDownListFor(model => model.SeriesId, Model.Serieses, "") @Html.ActionLink("Add Series", "Create", "Series")
             @Html.ValidationMessageFor(model => model.SeriesId)
         </div>
 
@@ -90,7 +90,7 @@
             @Html.LabelFor(model => model.SectionId)
         </div>
         <div class="editor-field">
-            @Html.DropDownListFor(model => model.SectionId, Model.Sections,"") @Html.ActionLink("Add Section", "Create", "Section")
+            @Html.DropDownListFor(model => model.SectionId, Model.Sections, "") @Html.ActionLink("Add Section", "Create", "Section")
             @Html.ValidationMessageFor(model => model.SectionId)
         </div>
 
@@ -102,20 +102,18 @@
             @Html.ValidationMessageFor(model => model.SectionIndex)
         </div>
 
-
-        @*TODO: Some kind of Ajax search for media would be nice.*@
         <p>
-            @Html.ActionLink("Add Media", "AddMedia")
+            @Html.ActionLink("Add Media", "AddMedia", new { sermonId = Model.Id })
         </p>
-        @if (Model.SermonMedia.Count > 0)
+        @if (Model.SermonMedia != null)
         {
             <div>
                 <table>
                     <tr>
                         <th>Name
                         </th>
-                        <td>Type
-                        </td>
+                        <th>Type
+                        </th>
                         <th></th>
                     </tr>
 
@@ -129,8 +127,7 @@
                                 @Html.DisplayFor(modelItem => media.Type)
                             </td>
                             <td>
-                                @Html.ActionLink("Edit Media", "Edit", "Media", new { id = media.Id }, null) |
-                        @Html.ActionLink("Remove Media", "Delete", "Media", new { id = media.Id }, null)
+                                @Html.ActionLink("Remove Media", "RemoveMedia", new { sermonId = Model.Id, mediaId = media.Id }, null)
                             </td>
                         </tr>
                     }
