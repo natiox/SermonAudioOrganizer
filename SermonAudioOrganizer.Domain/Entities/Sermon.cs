@@ -8,7 +8,7 @@ using System.Web;
 
 namespace SermonAudioOrganizer.Domain
 {
-    public class Sermon
+    public class Sermon : IEquatable<Sermon>
     {
         [Key]
         public int Id { get; set; }
@@ -59,6 +59,32 @@ namespace SermonAudioOrganizer.Domain
         /// </summary>
         [DisplayName("Sermon Media")]
         public virtual IList<Media> SermonMedia { get; set; }
+
+        public string GetMainFileName()
+        {
+            return SermonMedia.SingleOrDefault(sm => sm.Name.ToLower().Contains("mp3")).Name;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null) return false;
+            Sermon objAsSermon = obj as Sermon;
+            if (objAsSermon == null) return false;
+            else return Equals(objAsSermon);
+        }
+
+        //WHEREYOUWERE: implementing this for memsermonrepository to test mediascan class
+        public bool Equals(Sermon other)
+        {
+            if (other == null)
+                return false;
+
+            //TODO: WHEREYOUWERE - working on way to determine if sermons are equivalent....trying to get itcancreateasermonfromafilename test to pass
+            if (GetMainFileName() == other.GetMainFileName())
+                return true;
+            else
+                return false;
+        }
     }
 }
 

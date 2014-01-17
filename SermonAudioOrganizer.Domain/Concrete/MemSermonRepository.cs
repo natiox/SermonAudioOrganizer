@@ -18,8 +18,13 @@ namespace SermonAudioOrganizer.Domain
         public MemSermonRepository()
         {
             _sermons = new List<Sermon>();
-
+            _locations = new List<Location>();
+            _medias = new List<Media>();
+            _preachers = new List<Preacher>();
+            _serieses = new List<Series>();
+            _sections = new List<Section>();
         }
+
         public IEnumerable<Sermon> GetSermons()
         {
             return _sermons;
@@ -27,17 +32,19 @@ namespace SermonAudioOrganizer.Domain
 
         public Sermon GetSermonById(int sermonId)
         {
-            throw new NotImplementedException();
+            return _sermons.SingleOrDefault(s => s.Id == sermonId);
         }
 
         public void InsertSermon(Sermon sermon)
         {
-            throw new NotImplementedException();
+            if (!_sermons.Contains(sermon))
+                _sermons.Add(sermon);
         }
 
         public void DeleteSermon(int sermonId)
         {
             throw new NotImplementedException();
+
         }
 
         public void UpdateSermon(Sermon sermon)
@@ -47,7 +54,7 @@ namespace SermonAudioOrganizer.Domain
 
         public IEnumerable<Location> GetLocations()
         {
-            throw new NotImplementedException();
+            return _locations;
         }
 
         public Location GetLocationById(int locationId)
