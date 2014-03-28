@@ -62,16 +62,13 @@ namespace SermonAudioOrganizer.Domain
 
         public string GetMainFileName()
         {
-            return SermonMedia.SingleOrDefault(sm => sm.Name.ToLower().Contains("mp3")).Name;
+            Media media = SermonMedia.SingleOrDefault(sm => sm.Name.ToLower().Contains("mp3"));
+            if (media != null)
+                return media.Name;
+            else
+                return null;
         }
 
-        public override bool Equals(object obj)
-        {
-            if (obj == null) return false;
-            Sermon objAsSermon = obj as Sermon;
-            if (objAsSermon == null) return false;
-            else return Equals(objAsSermon);
-        }
 
         //WHEREYOUWERE: implementing this for memsermonrepository to test mediascan class
         public bool Equals(Sermon other)
@@ -79,11 +76,24 @@ namespace SermonAudioOrganizer.Domain
             if (other == null)
                 return false;
 
-            //TODO: WHEREYOUWERE - working on way to determine if sermons are equivalent....trying to get itcancreateasermonfromafilename test to pass
-            if (GetMainFileName() == other.GetMainFileName())
-                return true;
-            else
+            return this.GetMainFileName() == other.GetMainFileName();
+        }
+
+        public override bool Equals(Object obj)
+        {
+            if (obj == null)
                 return false;
+
+            Sermon s = obj as Sermon;
+            if (s == null)
+                return false;
+            else
+                return Equals(s);
+        }
+
+        public override int GetHashCode()
+        {
+            return this.GetMainFileName().GetHashCode();
         }
     }
 }

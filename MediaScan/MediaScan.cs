@@ -14,7 +14,12 @@ namespace MediaScan
     {
         public List<Sermon> Sermons;
 
-        public MediaScan(string mediaPath, ISermonRepository repository)
+        /// <summary>
+        /// Scans for media files in the given directory and loads them into the repository.
+        /// </summary>
+        /// <param name="mediaDirectory"></param>
+        /// <param name="repository"></param>
+        public MediaScan(string mediaDirectory, ISermonRepository repository)
         {
             Location defaultLocation;
             Sermons = new List<Sermon>();
@@ -32,7 +37,7 @@ namespace MediaScan
             }
 
 
-            foreach (var filePath in Directory.GetFiles(mediaPath))
+            foreach (var filePath in Directory.GetFiles(mediaDirectory))
             {
                 string fileName = Path.GetFileName(filePath);
 
