@@ -38,6 +38,7 @@ namespace MediaScan
             foreach (var filePath in Directory.GetFiles(mediaDirectory))
             {
                 string fileName = Path.GetFileName(filePath);
+                string title = string.Empty;
 
                 //If media is already in system, don't bother
                 if (!repository.GetMedias().Any(m => m.Name == fileName))
@@ -47,7 +48,14 @@ namespace MediaScan
 
                     var underscoreSplitFileName = Path.GetFileNameWithoutExtension(filePath).Split(new char[] { '_' });
 
+                    if (underscoreSplitFileName.Count() < 2)
+                    {
+                        //TODO: Log too few elements in filename
+                        continue;
+                    }
+
                     //Splits on case change
+                    //TODO: Also split from letters to numbers or numbers to letters
                     Regex regex = new Regex(@"
                         (?<=[A-Z])(?=[A-Z][a-z]) |
                          (?<=[^A-Z])(?=[A-Z]) |
@@ -84,7 +92,12 @@ namespace MediaScan
 
                     //TODO: Try to parse out passages from name
                     //TODO: Case where filename isn't preacher_title
-                    string title = regex.Replace(underscoreSplitFileName[1], " ");
+                    foreach (string word in underscoreSplitFileName.Skip(1))
+                    {
+                        title += regex.Replace(word, " ") + " ";
+                    }
+
+                    
 
                     Sermon sermon = new Sermon()
                     {

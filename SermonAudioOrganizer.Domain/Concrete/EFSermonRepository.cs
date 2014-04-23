@@ -20,15 +20,7 @@ namespace SermonAudioOrganizer.Domain
 
         public IEnumerable<Sermon> GetSermons()
         {
-            return context.Sermons.ToList();
-            //if (context.Sermons == null)
-            //{
-            //    return null;
-            //}
-            //else
-            //{
-            //    return context.Sermons.ToList();
-            //}
+            return context.Sermons;
         }
 
         public Sermon GetSermonById(int sermonId)
@@ -55,7 +47,7 @@ namespace SermonAudioOrganizer.Domain
 
         public IEnumerable<Location> GetLocations()
         {
-            return context.Locations.ToList();
+            return context.Locations;
         }
 
         public Location GetLocationById(int locationId)
