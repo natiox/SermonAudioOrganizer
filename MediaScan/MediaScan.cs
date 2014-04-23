@@ -12,8 +12,6 @@ namespace MediaScan
 {
     public class MediaScan
     {
-        public List<Sermon> Sermons;
-
         /// <summary>
         /// Scans for media files in the given directory and loads them into the repository.
         /// </summary>
@@ -22,7 +20,6 @@ namespace MediaScan
         public MediaScan(string mediaDirectory, ISermonRepository repository)
         {
             Location defaultLocation;
-            Sermons = new List<Sermon>();
 
             var locations = repository.GetLocations();
             if (locations.Count() > 0)
@@ -34,6 +31,7 @@ namespace MediaScan
             else
             {
                 defaultLocation = new Location() { City = "Albuquerque", State = "NM", Venue = "Church of Christ" };
+                repository.InsertLocation(defaultLocation);
             }
 
 
@@ -56,9 +54,18 @@ namespace MediaScan
                          (?<=[A-Za-z])(?=[^A-Za-z])", RegexOptions.IgnorePatternWhitespace);
 
                     var preacherName = regex.Replace(underscoreSplitFileName[0], " ").Split(new char[] { ' ' });
+                    string firstName = string.Empty;
+                    string lastName = string.Empty;
 
-                    string firstName = preacherName[0];
-                    string lastName = preacherName[1];
+                    if (preacherName.Count() == 2)
+                    {
+                        firstName = preacherName[0];
+                        lastName = preacherName[1];
+                    }
+                    else if (preacherName.Count() == 1)
+                    {
+                        firstName = preacherName[0];
+                    }
                     Preacher preacher;
                     if (string.IsNullOrEmpty(lastName))
                     {
@@ -72,11 +79,12 @@ namespace MediaScan
                     if (preacher == null)
                     {
                         preacher = new Preacher() { FirstName = firstName, LastName = lastName };
+                        repository.InsertPreacher(preacher);
                     }
 
                     //TODO: Try to parse out passages from name
-
-                    string title = regex.Replace(underscoreSplitFileName[0], " ");
+                    //TODO: Case where filename isn't preacher_title
+                    string title = regex.Replace(underscoreSplitFileName[1], " ");
 
                     Sermon sermon = new Sermon()
                     {

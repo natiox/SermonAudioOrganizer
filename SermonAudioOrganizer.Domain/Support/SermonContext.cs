@@ -10,7 +10,7 @@ namespace SermonAudioOrganizer.Domain
     public class SermonContext : DbContext
     {
         public SermonContext()
-            : base("Sermons")
+            : base("SermonOrganizer")
         { }
 
         public DbSet<Sermon> Sermons { get; set; }

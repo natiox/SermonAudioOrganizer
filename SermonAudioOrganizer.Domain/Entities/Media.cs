@@ -25,6 +25,10 @@ namespace SermonAudioOrganizer.Domain
 
         public MediaType Type { get; set; }
 
+        public Media()
+        {
+        }
+
         public Media(string fileName)
         {
             Name = Path.GetFileName(fileName);
