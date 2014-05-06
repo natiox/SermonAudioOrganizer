@@ -97,7 +97,7 @@ namespace MediaScan
                         title += regex.Replace(word, " ") + " ";
                     }
 
-                    
+                    title = title.Trim();
 
                     Sermon sermon = new Sermon()
                     {
