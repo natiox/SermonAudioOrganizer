@@ -39,10 +39,10 @@ namespace SermonAudioOrganizer.Domain
             context.Sermons.Remove(sermonToDelete);
         }
 
-        public void UpdateSermon(Sermon sermon)
-        {
-            context.Entry(sermon).State = System.Data.EntityState.Modified;
-        }
+        //public void UpdateSermon(Sermon sermon)
+        //{
+        //    context.Entry(sermon).State = System.Data.EntityState.Modified;
+        //}
 
 
         public IEnumerable<Location> GetLocations()
@@ -66,10 +66,10 @@ namespace SermonAudioOrganizer.Domain
             context.Locations.Remove(locationToDelete);
         }
 
-        public void UpdateLocation(Location location)
-        {
-            context.Entry(location).State = System.Data.EntityState.Modified;
-        }
+        //public void UpdateLocation(Location location)
+        //{
+        //    context.Entry(location).State = System.Data.EntityState.Modified;
+        //}
 
 
         public IEnumerable<Media> GetMedias()
@@ -93,10 +93,10 @@ namespace SermonAudioOrganizer.Domain
             context.Medias.Remove(mediaToDelete);
         }
 
-        public void UpdateMedia(Media media)
-        {
-            context.Entry(media).State = System.Data.EntityState.Modified;
-        }
+        //public void UpdateMedia(Media media)
+        //{
+        //    context.Entry(media).State = System.Data.EntityState.Modified;
+        //}
 
         public IEnumerable<Preacher> GetPreachers()
         {
@@ -119,10 +119,10 @@ namespace SermonAudioOrganizer.Domain
             context.Preachers.Remove(preacherToDelete);
         }
 
-        public void UpdatePreacher(Preacher preacher)
-        {
-            context.Entry(preacher).State = System.Data.EntityState.Modified;
-        }
+        //public void UpdatePreacher(Preacher preacher)
+        //{
+        //    context.Entry(preacher).State = System.Data.EntityState.Modified;
+        //}
 
 
         public IEnumerable<Section> GetSections()
@@ -146,10 +146,10 @@ namespace SermonAudioOrganizer.Domain
             context.Sections.Remove(sectionToDelete);
         }
 
-        public void UpdateSection(Section section)
-        {
-            context.Entry(section).State = System.Data.EntityState.Modified;
-        }
+        //public void UpdateSection(Section section)
+        //{
+        //    context.Entry(section).State = System.Data.EntityState.Modified;
+        //}
 
 
         public IEnumerable<Series> GetSerieses()
@@ -173,10 +173,10 @@ namespace SermonAudioOrganizer.Domain
             context.Serieses.Remove(seriesToDelete);
         }
 
-        public void UpdateSeries(Series series)
-        {
-            context.Entry(series).State = System.Data.EntityState.Modified;
-        }
+        //public void UpdateSeries(Series series)
+        //{
+        //    context.Entry(series).State = System.Data.EntityState.Modified;
+        //}
 
 
 

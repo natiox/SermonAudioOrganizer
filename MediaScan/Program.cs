@@ -6,7 +6,7 @@ namespace MediaScan
     {
         public static int Main(string[] args)
         {
-            string sourcePath = @"e:\temp\Sermons";
+            string sourcePath = @"c:\temp\Sermons";
             ISermonRepository sermonRepository;
             sermonRepository = new MemSermonRepository();
             //sermonRepository = new EFSermonRepository(new SermonContext());
