@@ -37,9 +37,9 @@ namespace SermonAudioOrganizer.Domain
             nextSectionId = 1;
         }
 
-        public IEnumerable<Sermon> GetSermons()
+        public IQueryable<Sermon> GetSermons()
         {
-            return _sermons;
+            return _sermons.AsQueryable();
         }
 
         public Sermon GetSermonById(int sermonId)
@@ -57,22 +57,20 @@ namespace SermonAudioOrganizer.Domain
 
         public void DeleteSermon(int sermonId)
         {
+            Sermon sermon = _sermons.Find(s => s.Id == sermonId);
+            if (sermon.SermonMedia != null)
+            {
+                foreach (var media in sermon.SermonMedia)
+                {
+                    _medias.Remove(media);
+                } 
+            }
             _sermons.RemoveAll(s => s.Id == sermonId);
         }
 
-        public void UpdateSermon(Sermon sermon)
+        public IQueryable<Location> GetLocations()
         {
-            var lookupSermon = _sermons.SingleOrDefault(s => s.Id == sermon.Id);
-            if (lookupSermon != null)
-            {
-                sermon.Id = lookupSermon.Id;
-                lookupSermon = sermon;
-            }
-        }
-
-        public IEnumerable<Location> GetLocations()
-        {
-            return _locations;
+            return _locations.AsQueryable();
         }
 
         public Location GetLocationById(int locationId)
@@ -92,23 +90,13 @@ namespace SermonAudioOrganizer.Domain
             _locations.RemoveAll(l => l.Id == locationId);
         }
 
-        public void UpdateLocation(Location location)
-        {
-            var lookupLocation = _locations.SingleOrDefault(l => l.Id == location.Id);
-            if (lookupLocation != null)
-            {
-                location.Id = lookupLocation.Id;
-                lookupLocation = location;
-            }
-        }
-
         /// <summary>
         /// Retrieve all media in the repository.
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<Media> GetMedias()
+        public IQueryable<Media> GetMedias()
         {
-            return _medias;
+            return _medias.AsQueryable();
         }
 
         public Media GetMediaById(int mediaId)
@@ -128,19 +116,9 @@ namespace SermonAudioOrganizer.Domain
             _medias.RemoveAll(m => m.Id == mediaId);
         }
 
-        public void UpdateMedia(Media media)
+        public IQueryable<Preacher> GetPreachers()
         {
-            var lookupMedia = _medias.SingleOrDefault(p => p.Id == media.Id);
-            if (lookupMedia != null)
-            {
-                media.Id = lookupMedia.Id;
-                lookupMedia = media;
-            }
-        }
-
-        public IEnumerable<Preacher> GetPreachers()
-        {
-            return _preachers;
+            return _preachers.AsQueryable();
         }
 
         public Preacher GetPreacherById(int preacherId)
@@ -160,19 +138,9 @@ namespace SermonAudioOrganizer.Domain
             _preachers.RemoveAll(p => p.Id == preacherID);
         }
 
-        public void UpdatePreacher(Preacher preacher)
+        public IQueryable<Section> GetSections()
         {
-            var lookupPreacher = _preachers.SingleOrDefault(p => p.Id == preacher.Id);
-            if (lookupPreacher != null)
-            {
-                preacher.Id = lookupPreacher.Id;
-                lookupPreacher = preacher;
-            }
-        }
-
-        public IEnumerable<Section> GetSections()
-        {
-            return _sections;
+            return _sections.AsQueryable();
         }
 
         public Section GetSectionById(int sectionId)
@@ -192,19 +160,9 @@ namespace SermonAudioOrganizer.Domain
             _sections.RemoveAll(s => s.Id == sectionID);
         }
 
-        public void UpdateSection(Section section)
+        public IQueryable<Series> GetSerieses()
         {
-            var lookupSection = _sections.SingleOrDefault(s => s.Id == section.Id);
-            if (lookupSection != null)
-            {
-                section.Id = lookupSection.Id;
-                lookupSection = section;
-            }
-        }
-
-        public IEnumerable<Series> GetSerieses()
-        {
-            return _serieses;
+            return _serieses.AsQueryable();
         }
 
         public Series GetSeriesById(int seriesId)
@@ -222,11 +180,6 @@ namespace SermonAudioOrganizer.Domain
         public void DeleteSeries(int seriesID)
         {
             _serieses.RemoveAll(s => s.Id == seriesID);
-        }
-
-        public void UpdateSeries(Series series)
-        {
-            return;
         }
 
         public void Save()

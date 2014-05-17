@@ -22,7 +22,7 @@ namespace MediaScan
             Location defaultLocation;
 
             var locations = repository.GetLocations();
-            if (locations.Count() > 0)
+            if (locations.Any())
             {
                 defaultLocation = locations
                 .Where(l => l.City == "Albuquerque" && l.Venue == "Church of Christ")

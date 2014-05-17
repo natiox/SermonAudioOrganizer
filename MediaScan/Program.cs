@@ -6,12 +6,11 @@ namespace MediaScan
     {
         public static int Main(string[] args)
         {
-            string sourcePath = @"c:\temp\Sermons";
             ISermonRepository sermonRepository;
-            sermonRepository = new MemSermonRepository();
-            //sermonRepository = new EFSermonRepository(new SermonContext());
+            //sermonRepository = new MemSermonRepository();
+            sermonRepository = new EFSermonRepository(new SermonContext());
 
-            MediaScan mediaScan = new MediaScan(sourcePath, sermonRepository);
+            MediaScan mediaScan = new MediaScan(args[0], sermonRepository);
 
             foreach (var sermon in sermonRepository.GetSermons())
             {
@@ -23,4 +22,4 @@ namespace MediaScan
             return 0;
         }
     }
-}
+} 

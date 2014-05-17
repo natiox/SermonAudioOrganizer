@@ -174,7 +174,6 @@ namespace SermonAudioOrganizer.Controllers
 
             if (ModelState.IsValid)
             {
-                repository.UpdateSermon(sermon);
                 repository.Save();
                 return RedirectToAction("Index");
             }
@@ -202,6 +201,7 @@ namespace SermonAudioOrganizer.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Sermon sermon = repository.GetSermonById(id);
+            sermon.SermonMedia = null;
             repository.DeleteSermon(sermon.Id);
             repository.Save();
             return RedirectToAction("Index");

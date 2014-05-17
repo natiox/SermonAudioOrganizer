@@ -70,7 +70,6 @@ namespace SermonAudioOrganizer.Domain
         }
 
 
-        //WHEREYOUWERE: implementing this for memsermonrepository to test mediascan class
         public bool Equals(Sermon other)
         {
             if (other == null)

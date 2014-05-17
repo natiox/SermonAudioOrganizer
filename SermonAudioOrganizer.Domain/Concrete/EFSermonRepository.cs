@@ -18,7 +18,7 @@ namespace SermonAudioOrganizer.Domain
             this.context = context;
         }
 
-        public IEnumerable<Sermon> GetSermons()
+        public IQueryable<Sermon> GetSermons()
         {
             return context.Sermons;
         }
@@ -36,16 +36,17 @@ namespace SermonAudioOrganizer.Domain
         public void DeleteSermon(int sermonId)
         {
             Sermon sermonToDelete = context.Sermons.Find(sermonId);
+            if (sermonToDelete.SermonMedia != null)
+            {
+                foreach (var media in sermonToDelete.SermonMedia)
+                {
+                    context.Medias.Remove(media);
+                } 
+            }
             context.Sermons.Remove(sermonToDelete);
         }
 
-        //public void UpdateSermon(Sermon sermon)
-        //{
-        //    context.Entry(sermon).State = System.Data.EntityState.Modified;
-        //}
-
-
-        public IEnumerable<Location> GetLocations()
+        public IQueryable<Location> GetLocations()
         {
             return context.Locations;
         }
@@ -66,15 +67,9 @@ namespace SermonAudioOrganizer.Domain
             context.Locations.Remove(locationToDelete);
         }
 
-        //public void UpdateLocation(Location location)
-        //{
-        //    context.Entry(location).State = System.Data.EntityState.Modified;
-        //}
-
-
-        public IEnumerable<Media> GetMedias()
+        public IQueryable<Media> GetMedias()
         {
-            return context.Medias.ToList();
+            return context.Medias;
         }
 
         public Media GetMediaById(int mediaId)
@@ -93,14 +88,9 @@ namespace SermonAudioOrganizer.Domain
             context.Medias.Remove(mediaToDelete);
         }
 
-        //public void UpdateMedia(Media media)
-        //{
-        //    context.Entry(media).State = System.Data.EntityState.Modified;
-        //}
-
-        public IEnumerable<Preacher> GetPreachers()
+        public IQueryable<Preacher> GetPreachers()
         {
-            return context.Preachers.ToList();
+            return context.Preachers;
         }
 
         public Preacher GetPreacherById(int preacherId)
@@ -119,15 +109,9 @@ namespace SermonAudioOrganizer.Domain
             context.Preachers.Remove(preacherToDelete);
         }
 
-        //public void UpdatePreacher(Preacher preacher)
-        //{
-        //    context.Entry(preacher).State = System.Data.EntityState.Modified;
-        //}
-
-
-        public IEnumerable<Section> GetSections()
+        public IQueryable<Section> GetSections()
         {
-            return context.Sections.ToList();
+            return context.Sections;
         }
 
         public Section GetSectionById(int sectionId)
@@ -146,15 +130,9 @@ namespace SermonAudioOrganizer.Domain
             context.Sections.Remove(sectionToDelete);
         }
 
-        //public void UpdateSection(Section section)
-        //{
-        //    context.Entry(section).State = System.Data.EntityState.Modified;
-        //}
-
-
-        public IEnumerable<Series> GetSerieses()
+        public IQueryable<Series> GetSerieses()
         {
-            return context.Serieses.ToList();
+            return context.Serieses;
         }
 
         public Series GetSeriesById(int seriesId)
@@ -172,15 +150,6 @@ namespace SermonAudioOrganizer.Domain
             Series seriesToDelete = context.Serieses.Find(seriesId);
             context.Serieses.Remove(seriesToDelete);
         }
-
-        //public void UpdateSeries(Series series)
-        //{
-        //    context.Entry(series).State = System.Data.EntityState.Modified;
-        //}
-
-
-
-
 
         public void Save()
         {

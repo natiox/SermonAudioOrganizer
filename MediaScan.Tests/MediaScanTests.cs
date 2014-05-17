@@ -17,6 +17,7 @@ namespace MediaScan.Tests
         public void Initialize()
         {
             _repository = new MemSermonRepository();
+            //This ain't working.  _repository = new EFSermonRepository(new SermonContext());
             Directory.CreateDirectory("Sermons");
             var johnMp3 = File.Create(@"Sermons\JohnSmith_TheTestSermon.mp3");
             johnMp3.Close();
@@ -68,6 +69,22 @@ namespace MediaScan.Tests
             Assert.IsTrue(_repository.GetSermons().Any(s => s.Title == "This Is A Test Sermon"
                                                                     && s.SermonPreacher.FirstName == "Bill"
                                                                     && s.SermonPreacher.LastName == "Wyatt"), "Preacher Bill Wyatt not found");
+        }
+
+        [TestMethod]
+        public void ASermonCanBeDeleted()
+        {
+            //Arrange
+            Sermon sermon = new Sermon() { Title = "Sermon to Delete" };
+            _repository.InsertSermon(sermon);
+            //_repository.InsertPreacher(new Preacher() { FirstName = "John", LastName = "Smith" });
+            _repository.Save();
+
+            //Act
+            _repository.DeleteSermon(sermon.Id);
+
+            //Assert
+            Assert.IsFalse(_repository.GetSermons().Any(s => s.Title == "Sermon to Delete"), "Sermon to Delete not found");
         }
     }
 }
