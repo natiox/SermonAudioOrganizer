@@ -62,11 +62,18 @@ namespace SermonAudioOrganizer.Domain
 
         public string GetMainFileName()
         {
-            Media media = SermonMedia.SingleOrDefault(sm => sm.Name.ToLower().Contains("mp3"));
-            if (media != null)
-                return media.Name;
+            if (SermonMedia != null)
+            {
+                Media media = SermonMedia.SingleOrDefault(sm => sm.Name.ToLower().Contains("mp3"));
+                if (media != null)
+                    return media.Name;
+                else
+                    return null;
+            }
             else
+            {
                 return null;
+            }
         }
 
 
@@ -92,7 +99,11 @@ namespace SermonAudioOrganizer.Domain
 
         public override int GetHashCode()
         {
-            return this.GetMainFileName().GetHashCode();
+            string fileName = this.GetMainFileName();
+            if (!string.IsNullOrEmpty(fileName))
+                return this.GetMainFileName().GetHashCode();
+            else
+                return 0;
         }
     }
 }
