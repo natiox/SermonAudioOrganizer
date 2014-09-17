@@ -50,7 +50,7 @@ namespace SermonAudioOrganizer.Controllers
 
         public ActionResult Index()
         {
-            return View(repository.GetSermons());
+            return View(repository.GetSermons().OrderByDescending(s => s.RecordingDate).ToList());
         }
 
         //
