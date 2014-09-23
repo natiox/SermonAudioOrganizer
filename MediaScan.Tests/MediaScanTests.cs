@@ -38,21 +38,21 @@ namespace MediaScan.Tests
         public void ItCanCreateSermonsFromFilenames()
         {
             MediaScan mediaScan = new MediaScan("Sermons", _repository);
-            Assert.AreEqual(3, _repository.GetSermons().Count(),"wrong number of sermons found");
-            Assert.IsTrue(_repository.GetSermons().Any(s => s.Title == "The Test Sermon" 
-                                                                    && s.SermonPreacher.FirstName == "John" 
+            Assert.AreEqual(3, _repository.GetSermons().Count(), "wrong number of sermons found");
+            Assert.IsTrue(_repository.GetSermons().Any(s => s.Title == "The Test Sermon"
+                                                                    && s.SermonPreacher.FirstName == "John"
                                                                     && s.SermonPreacher.LastName == "Smith"
                                                                     && s.SermonLocation.City == "Albuquerque"
                                                                     && s.SermonLocation.State == "NM"
                                                                     && s.SermonLocation.Venue == "Church of Christ"
                                                                     && string.IsNullOrEmpty(s.Comment)
-                                                                    && string.IsNullOrEmpty(s.Passages)),"The Test Sermon not found");
+                                                                    && string.IsNullOrEmpty(s.Passages)), "The Test Sermon not found");
 
             Assert.IsTrue(_repository.GetSermons().Any(s => s.Title == "Luke 12a"
                                                                     && s.SermonPreacher.FirstName == "Bob"), "Luke 12a not found");
 
             Assert.IsTrue(_repository.GetSermons().Any(s => s.Title == "This Is A Test Sermon"
-                                                                    && s.SermonPreacher.FirstName == "Bill"),"This is a Test Sermon not found");
+                                                                    && s.SermonPreacher.FirstName == "Bill"), "This is a Test Sermon not found");
         }
 
         [TestMethod]
@@ -69,6 +69,44 @@ namespace MediaScan.Tests
             Assert.IsTrue(_repository.GetSermons().Any(s => s.Title == "This Is A Test Sermon"
                                                                     && s.SermonPreacher.FirstName == "Bill"
                                                                     && s.SermonPreacher.LastName == "Wyatt"), "Preacher Bill Wyatt not found");
+        }
+
+        [TestMethod]
+        public void ItAvoidsDuplicateSermons()
+        {
+            //Arrange
+            MediaScan mediaScan = new MediaScan("Sermons", _repository);
+
+            //Act
+            mediaScan = new MediaScan("Sermons", _repository);
+
+            //Assert
+            Assert.AreEqual(_repository.GetSermons().Count(s => s.Title == "This Is A Test Sermon"), 1, "Duplicate sermons found");
+        }
+
+        [TestMethod]
+        public void ItAvoidsDuplicatePreachers()
+        {
+            //Arrange
+            _repository.InsertPreacher(new Preacher() { FirstName = "Bill", LastName = "Wyatt" });
+            _repository.Save();
+            MediaScan mediaScan = new MediaScan("Sermons", _repository);
+
+            var bill2Mp3 = File.Create(@"Sermons\Bill_This_Is_Another_Test_Sermon.mp3");
+            bill2Mp3.Close();
+
+            File.Delete(bill2Mp3.ToString());
+
+            //Act
+            mediaScan = new MediaScan("Sermons", _repository);
+
+            //Assert
+            Assert.IsTrue(_repository.GetSermons().Any(s => s.Title == "This Is Another Test Sermon"
+                                                                    && s.SermonPreacher.FirstName == "Bill"
+                                                                    && s.SermonPreacher.LastName == "Wyatt"), "Preacher Bill Wyatt not found");
+
+            //TODO: WHEREYOUWERE MediaScan is creating duplicate preachers, regardless of what this says.
+            Assert.AreEqual(_repository.GetPreachers().Count(p => p.FirstName == "Bill"), 1, "Duplicate preachers found");
         }
 
         [TestMethod]

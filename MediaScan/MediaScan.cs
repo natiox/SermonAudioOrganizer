@@ -74,6 +74,7 @@ namespace MediaScan
                     {
                         firstName = preacherName[0];
                     }
+
                     Preacher preacher;
                     if (string.IsNullOrEmpty(lastName))
                     {
