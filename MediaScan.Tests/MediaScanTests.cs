@@ -16,8 +16,9 @@ namespace MediaScan.Tests
         [TestInitialize]
         public void Initialize()
         {
-            _repository = new MemSermonRepository();
-            //This ain't working.  _repository = new EFSermonRepository(new SermonContext());
+            //_repository = new MemSermonRepository();
+            //This ain't working.  
+            _repository = new EFSermonRepository(new SermonContext());
             Directory.CreateDirectory("Sermons");
             var johnMp3 = File.Create(@"Sermons\JohnSmith_TheTestSermon.mp3");
             johnMp3.Close();
@@ -88,11 +89,14 @@ namespace MediaScan.Tests
         public void ItAvoidsDuplicatePreachers()
         {
             //Arrange
-            _repository.InsertPreacher(new Preacher() { FirstName = "Bill", LastName = "Wyatt" });
-            _repository.Save();
+            if (!_repository.GetPreachers().Any(p => p.FirstName == "Unit" && p.LastName == "Test"))
+            {
+                _repository.InsertPreacher(new Preacher() { FirstName = "Unit", LastName = "Test" });
+                _repository.Save();
+            }
             MediaScan mediaScan = new MediaScan("Sermons", _repository);
 
-            var bill2Mp3 = File.Create(@"Sermons\Bill_This_Is_Another_Test_Sermon.mp3");
+            var bill2Mp3 = File.Create(@"Sermons\Unit_This_Is_Another_Test_Sermon.mp3");
             bill2Mp3.Close();
 
             File.Delete(bill2Mp3.ToString());
@@ -102,11 +106,11 @@ namespace MediaScan.Tests
 
             //Assert
             Assert.IsTrue(_repository.GetSermons().Any(s => s.Title == "This Is Another Test Sermon"
-                                                                    && s.SermonPreacher.FirstName == "Bill"
-                                                                    && s.SermonPreacher.LastName == "Wyatt"), "Preacher Bill Wyatt not found");
+                                                                    && s.SermonPreacher.FirstName == "Unit"
+                                                                    && s.SermonPreacher.LastName == "Test"), "Preacher Unit Test not found");
 
             //TODO: WHEREYOUWERE MediaScan is creating duplicate preachers, regardless of what this says.
-            Assert.AreEqual(_repository.GetPreachers().Count(p => p.FirstName == "Bill"), 1, "Duplicate preachers found");
+            Assert.AreEqual(_repository.GetPreachers().Count(p => p.FirstName == "Unit"), 1, "Duplicate preachers found");
         }
 
         [TestMethod]
