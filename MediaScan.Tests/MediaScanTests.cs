@@ -16,6 +16,8 @@ namespace MediaScan.Tests
         [TestInitialize]
         public void Initialize()
         {
+            //Note to self:  to get this EF repository to work, I had to initially set connection strings in temp folder to create mdf file.
+            //From there, I was able to copy it into the bin\Debug folder.  Might have to do this on a new machine too?
             //_repository = new MemSermonRepository();
             //This ain't working.  
             _repository = new EFSermonRepository(new SermonContext());
