@@ -16,11 +16,22 @@ namespace MediaScan.Tests
         [TestInitialize]
         public void Initialize()
         {
+            //Set up database file path
+            AppDomain.CurrentDomain.SetData("DataDirectory", Path.GetFullPath(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\Fixtures")));
+
             //Note to self:  to get this EF repository to work, I had to initially set connection strings in temp folder to create mdf file.
             //From there, I was able to copy it into the bin\Debug folder.  Might have to do this on a new machine too?
             //_repository = new MemSermonRepository();
             //This ain't working.  
             _repository = new EFSermonRepository(new SermonContext());
+            foreach (var sermon in _repository.GetSermons().OrderByDescending(s => s.Id).ToList())
+            {
+                _repository.DeleteSermon(sermon.Id);
+            }
+
+            //_repository.GetSermons().ToList().ForEach()
+                    
+
             Directory.CreateDirectory("Sermons");
             var johnMp3 = File.Create(@"Sermons\JohnSmith_TheTestSermon.mp3");
             johnMp3.Close();

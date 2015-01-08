@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace SermonAudioOrganizer.Domain
 {
+    //TODO: Need to drop the repository pattern.  It's useless.  http://rob.conery.io/2014/03/04/repositories-and-unitofwork-are-not-a-good-idea/
     public interface ISermonRepository : IDisposable
     {
         IQueryable<Sermon> GetSermons();
