@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SermonAudioOrganizer.Domain
 {
-    public class SermonContext : DbContext
+    public class SermonContext : DbContext, ISermonContext
     {
         public SermonContext()
             : base("SermonOrganizer")
@@ -19,5 +19,10 @@ namespace SermonAudioOrganizer.Domain
         public DbSet<Series> Serieses { get; set; }
         public DbSet<Section> Sections { get; set; }
         public DbSet<Location> Locations { get; set; }
+
+        IQueryable<T> ISermonContext.Query<T>()
+        {
+            return Set<T>();
+        }
     }
 }
