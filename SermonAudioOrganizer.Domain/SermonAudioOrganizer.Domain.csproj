@@ -47,7 +47,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Abstract\ISermonRepository.cs" />
     <Compile Include="Concrete\MemSermonRepository.cs" />
     <Compile Include="Entities\Location.cs" />
     <Compile Include="Entities\Media.cs" />
