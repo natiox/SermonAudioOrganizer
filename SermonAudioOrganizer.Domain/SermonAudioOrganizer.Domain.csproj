@@ -55,7 +55,6 @@
     <Compile Include="Entities\Section.cs" />
     <Compile Include="Entities\Series.cs" />
     <Compile Include="Entities\Sermon.cs" />
-    <Compile Include="ISermonContext.cs" />
     <Compile Include="SermonContext.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -12,16 +12,25 @@ namespace MediaScan
 {
     public class MediaScan
     {
+        private SermonContext _context;
+        private string _mediaDirectory;
+
+        public MediaScan(string mediaDirectory, SermonContext context)
+        {
+            _context = context;
+            _mediaDirectory = mediaDirectory;
+        }
+
         /// <summary>
         /// Scans for media files in the given directory and loads them into the repository.
         /// </summary>
         /// <param name="mediaDirectory"></param>
         /// <param name="repository"></param>
-        public MediaScan(string mediaDirectory, ISermonRepository repository)
+        public void Scan()
         {
             Location defaultLocation;
 
-            var locations = repository.GetLocations();
+            var locations = _context.Locations;
             if (locations.Any())
             {
                 defaultLocation = locations
@@ -31,17 +40,18 @@ namespace MediaScan
             else
             {
                 defaultLocation = new Location() { City = "Albuquerque", State = "NM", Venue = "Church of Christ" };
-                repository.InsertLocation(defaultLocation);
+                _context.Locations.Add(defaultLocation);
+                _context.SaveChanges();
             }
 
 
-            foreach (var filePath in Directory.GetFiles(mediaDirectory))
+            foreach (var filePath in Directory.GetFiles(_mediaDirectory))
             {
                 string fileName = Path.GetFileName(filePath);
                 string title = string.Empty;
 
                 //If media is already in system, don't bother
-                if (!repository.GetMedias().Any(m => m.Name == fileName))
+                if (!_context.Medias.Any(m => m.Name == fileName))
                 {
                     FileInfo fileInfo = new FileInfo(filePath);
                     Media media = new Media(fileName);
@@ -78,17 +88,17 @@ namespace MediaScan
                     Preacher preacher;
                     if (string.IsNullOrEmpty(lastName))
                     {
-                        preacher = repository.GetPreachers().Where(p => p.FirstName == firstName).SingleOrDefault();
+                        preacher = _context.Preachers.Where(p => p.FirstName == firstName).SingleOrDefault();
                     }
                     else
                     {
-                        preacher = repository.GetPreachers().Where(p => p.FirstName == firstName && p.LastName == lastName).SingleOrDefault();
+                        preacher = _context.Preachers.Where(p => p.FirstName == firstName && p.LastName == lastName).SingleOrDefault();
                     }
 
                     if (preacher == null)
                     {
                         preacher = new Preacher() { FirstName = firstName, LastName = lastName };
-                        repository.InsertPreacher(preacher);
+                        _context.Preachers.Add(preacher);
                     }
 
                     //TODO: Try to parse out passages from name
@@ -109,10 +119,10 @@ namespace MediaScan
                         SermonMedia = new List<Media>() { media }
                     };
 
-                    repository.InsertSermon(sermon);
+                    _context.Sermons.Add(sermon);
                 }
             }
-            repository.Save();
+            _context.SaveChanges();
         }
     }
 }

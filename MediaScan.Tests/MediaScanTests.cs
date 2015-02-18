@@ -5,13 +5,23 @@ using SermonAudioOrganizer.Domain;
 //using System.Collections.Generic;
 using System.Linq;
 using System.IO;
+using System.Data.Entity;
+using Moq;
+using System.Collections.Generic;
 
 namespace MediaScan.Tests
 {
     [TestClass]
     public class MediaScanUnitTest
     {
-        ISermonRepository _repository;
+        private Mock<SermonContext> mockSermonContext;
+
+        private Mock<DbSet<Sermon>> mockSermonSet;
+        private Mock<DbSet<Preacher>> mockPreacherSet;
+        private Mock<DbSet<Media>> mockMediaSet;
+        private Mock<DbSet<Series>> mockSeriesSet;
+        private Mock<DbSet<Section>> mockSectionSet;
+        private Mock<DbSet<Location>> mockLocationSet;
 
         [TestInitialize]
         public void Initialize()
@@ -23,14 +33,46 @@ namespace MediaScan.Tests
             //From there, I was able to copy it into the bin\Debug folder.  Might have to do this on a new machine too?
             //_repository = new MemSermonRepository();
             //This ain't working.  
-            _repository = new EFSermonRepository(new SermonContext());
-            foreach (var sermon in _repository.GetSermons().OrderByDescending(s => s.Id).ToList())
-            {
-                _repository.DeleteSermon(sermon.Id);
-            }
 
-            //_repository.GetSermons().ToList().ForEach()
-                    
+            mockSermonSet = new Mock<DbSet<Sermon>>();
+            mockSermonContext = new Mock<SermonContext>();
+            var sermonList = new List<Sermon> 
+            { 
+                new Sermon 
+                {
+                    Id = 1,
+                    Title = "Test",
+                    Topic = "Test Topic",
+                    Comment = "Test Comment",
+                    RecordingDate = DateTime.Today,
+                    Passages = "Test Passages",
+                    SeriesIndex = "1",
+                    SectionIndex = 1
+                }
+            }.AsQueryable(); 
+            mockSermonContext.Setup(m => m.Sermons).Returns(mockSermonSet.Object);
+            //TODO: WHEREYOUWERE:  Setting these up for query, maybe?  Not sure.
+            mockSermonSet.As<IQueryable<Sermon>>().Setup(m => m.Provider).Returns(sermonList.Provider);
+            mockSermonSet.As<IQueryable<Sermon>>().Setup(m => m.Expression).Returns(sermonList.Expression);
+            mockSermonSet.As<IQueryable<Sermon>>().Setup(m => m.ElementType).Returns(sermonList.ElementType);
+            mockSermonSet.As<IQueryable<Sermon>>().Setup(m => m.GetEnumerator()).Returns(sermonList.GetEnumerator()); 
+
+
+
+
+            mockSermonContext.Setup(m => m.Preachers).Returns(mockPreacherSet.Object);
+            mockSermonContext.Setup(m => m.Medias).Returns(mockMediaSet.Object);
+            mockSermonContext.Setup(m => m.Serieses).Returns(mockSeriesSet.Object);
+            mockSermonContext.Setup(m => m.Sections).Returns(mockSectionSet.Object);
+            mockSermonContext.Setup(m => m.Locations).Returns(mockLocationSet.Object); 
+
+            //foreach (var sermon in _context.Sermons.OrderByDescending(s => s.Id).ToList())
+            //{
+            //    _repository.DeleteSermon(sermon.Id);
+            //    _context.DeleteObject(order.SalesOrderDetails.First());
+            //}
+
+            //_repository.GetSermons().ToList().ForEach()                    
 
             Directory.CreateDirectory("Sermons");
             var johnMp3 = File.Create(@"Sermons\JohnSmith_TheTestSermon.mp3");
@@ -51,22 +93,25 @@ namespace MediaScan.Tests
         [TestMethod]
         public void ItCanCreateSermonsFromFilenames()
         {
-            MediaScan mediaScan = new MediaScan("Sermons", _repository);
-            Assert.AreEqual(3, _repository.GetSermons().Count(), "wrong number of sermons found");
-            Assert.IsTrue(_repository.GetSermons().Any(s => s.Title == "The Test Sermon"
-                                                                    && s.SermonPreacher.FirstName == "John"
-                                                                    && s.SermonPreacher.LastName == "Smith"
-                                                                    && s.SermonLocation.City == "Albuquerque"
-                                                                    && s.SermonLocation.State == "NM"
-                                                                    && s.SermonLocation.Venue == "Church of Christ"
-                                                                    && string.IsNullOrEmpty(s.Comment)
-                                                                    && string.IsNullOrEmpty(s.Passages)), "The Test Sermon not found");
+            MediaScan mediaScan = new MediaScan("Sermons", mockSermonContext.Object);
+            mockSermonSet.Verify(m => m.Add(It.IsAny<Sermon>()), Times.Exactly(3));
+            mockPreacherSet.Verify(m => m.Add(It.IsAny<Preacher>()), Times.Exactly(3));
+            mockSermonContext.Verify(m => m.SaveChanges(), Times.Once());
 
-            Assert.IsTrue(_repository.GetSermons().Any(s => s.Title == "Luke 12a"
-                                                                    && s.SermonPreacher.FirstName == "Bob"), "Luke 12a not found");
+            //Assert.IsTrue(_repository.GetSermons().Any(s => s.Title == "The Test Sermon"
+            //                                                        && s.SermonPreacher.FirstName == "John"
+            //                                                        && s.SermonPreacher.LastName == "Smith"
+            //                                                        && s.SermonLocation.City == "Albuquerque"
+            //                                                        && s.SermonLocation.State == "NM"
+            //                                                        && s.SermonLocation.Venue == "Church of Christ"
+            //                                                        && string.IsNullOrEmpty(s.Comment)
+            //                                                        && string.IsNullOrEmpty(s.Passages)), "The Test Sermon not found");
 
-            Assert.IsTrue(_repository.GetSermons().Any(s => s.Title == "This Is A Test Sermon"
-                                                                    && s.SermonPreacher.FirstName == "Bill"), "This is a Test Sermon not found");
+            //Assert.IsTrue(_repository.GetSermons().Any(s => s.Title == "Luke 12a"
+            //                                                        && s.SermonPreacher.FirstName == "Bob"), "Luke 12a not found");
+
+            //Assert.IsTrue(_repository.GetSermons().Any(s => s.Title == "This Is A Test Sermon"
+            //                                                        && s.SermonPreacher.FirstName == "Bill"), "This is a Test Sermon not found");
         }
 
         [TestMethod]

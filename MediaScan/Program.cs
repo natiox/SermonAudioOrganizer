@@ -6,10 +6,10 @@ namespace MediaScan
     {
         public static int Main(string[] args)
         {
-            ISermonContext
-            MediaScan mediaScan = new MediaScan(args[0], sermonRepository);
-            SermonContext
-            foreach (var sermon in sermonRepository.GetSermons())
+            SermonContext context = new SermonContext();
+            MediaScan mediaScan = new MediaScan(args[0], context);
+
+            foreach (var sermon in context.Sermons)
             {
                 Console.WriteLine(string.Format("{0} by {1} {2} dated {3} in {4}", 
                     sermon.Title, sermon.SermonPreacher.FirstName, sermon.SermonPreacher.LastName, sermon.RecordingDate.ToShortDateString(), sermon.SermonLocation.Venue));
