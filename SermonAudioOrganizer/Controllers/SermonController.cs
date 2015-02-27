@@ -12,11 +12,11 @@ namespace SermonAudioOrganizer.Controllers
 {
     public class SermonController : Controller
     {
-        private ISermonRepository repository;
+        private SermonContext _sermonContext;
 
         public SermonController()
         {
-            repository = new EFSermonRepository(new SermonContext());
+            _sermonContext = new SermonContext();
         }
 
         public ActionResult AddMedia(int sermonId = 0)
