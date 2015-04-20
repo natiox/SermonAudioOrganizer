@@ -103,7 +103,7 @@ namespace SermonAudioOrganizer.Controllers
                 SermonSection = (sermonViewModel.SectionId != null) ? _sermonContext.Sections.Find(sermonViewModel.SectionId.Value) : null,
                 Title = sermonViewModel.Title,
                 Topic = sermonViewModel.Topic
-                // TODO: SermonMedia = repository.GetMediaById(sermonViewModel.SermonMedia.Media
+                // TODO: SermonMedia = _sermonContext.MediaById(sermonViewModel.SermonMedia.Media
             };
 
             if (ModelState.IsValid)
@@ -127,8 +127,8 @@ namespace SermonAudioOrganizer.Controllers
                 return HttpNotFound();
             }
 
-            SermonEditViewModel sermonEditViewModel = new SermonEditViewModel(sermon, repository.GetLocations(), repository.GetPreachers(),
-                repository.GetSerieses(), repository.GetSections());
+            SermonEditViewModel sermonEditViewModel = new SermonEditViewModel(sermon, _sermonContext.Locations, _sermonContext.Preachers,
+                _sermonContext.Serieses, _sermonContext.Sections);
             return View(sermonEditViewModel);
         }
 
@@ -139,7 +139,7 @@ namespace SermonAudioOrganizer.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(SermonEditViewModel sermonViewModel)
         {
-            Sermon sermon = repository.GetSermonById(sermonViewModel.Id);
+            Sermon sermon = _sermonContext.Sermons.Find(sermonViewModel.Id);
 
             if (sermon.Title != sermonViewModel.Title)
                 sermon.Title = sermonViewModel.Title;
@@ -163,22 +163,22 @@ namespace SermonAudioOrganizer.Controllers
                 sermon.SeriesIndex = sermonViewModel.SeriesIndex;
 
             if (((sermon.SermonLocation != null) ? sermon.SermonLocation.Id : 0) != sermonViewModel.LocationId)
-                sermon.SermonLocation = (sermonViewModel.LocationId != null) ? repository.GetLocationById(sermonViewModel.LocationId.Value) : null;
+                sermon.SermonLocation = (sermonViewModel.LocationId != null) ? _sermonContext.Locations.Find(sermonViewModel.LocationId.Value) : null;
 
             if (((sermon.SermonPreacher != null) ? sermon.SermonPreacher.Id : 0) != sermonViewModel.PreacherId)
-               sermon.SermonPreacher = (sermonViewModel.PreacherId != null) ? repository.GetPreacherById(sermonViewModel.PreacherId.Value) : null;
+               sermon.SermonPreacher = (sermonViewModel.PreacherId != null) ? _sermonContext.Preachers.Find(sermonViewModel.PreacherId.Value) : null;
 
             if (((sermon.SermonSeries != null) ? sermon.SermonSeries.Id : 0) != sermonViewModel.SeriesId)
-                sermon.SermonSeries = (sermonViewModel.SeriesId != null) ? repository.GetSeriesById(sermonViewModel.SeriesId.Value) : null;
+                sermon.SermonSeries = (sermonViewModel.SeriesId != null) ? _sermonContext.Serieses.Find(sermonViewModel.SeriesId.Value) : null;
 
             if (((sermon.SermonSection != null) ? sermon.SermonSection.Id : 0) != sermonViewModel.SectionId)
-                sermon.SermonSection = (sermonViewModel.SectionId != null) ? repository.GetSectionById(sermonViewModel.SectionId.Value) : null;
+                sermon.SermonSection = (sermonViewModel.SectionId != null) ? _sermonContext.Sections.Find(sermonViewModel.SectionId.Value) : null;
 
-                //TODO: SermonMedia = repository.GetMediaById(sermonViewModel.SermonMedia.Media
+                //TODO: SermonMedia = _sermonContext.MediaById(sermonViewModel.SermonMedia.Media
 
             if (ModelState.IsValid)
             {
-                repository.Save();
+                _sermonContext.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(sermon);
@@ -189,7 +189,7 @@ namespace SermonAudioOrganizer.Controllers
 
         public ActionResult Delete(int id = 0)
         {
-            Sermon sermon = repository.GetSermonById(id);
+            Sermon sermon = _sermonContext.Sermons.Find(id);
             if (sermon == null)
             {
                 return HttpNotFound();
@@ -204,10 +204,11 @@ namespace SermonAudioOrganizer.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Sermon sermon = repository.GetSermonById(id);
+            Sermon sermon = _sermonContext.Sermons.Find(id);
             sermon.SermonMedia = null;
-            repository.DeleteSermon(sermon.Id);
-            repository.Save();
+            _sermonContext.Sermons.Attach(sermon);
+            _sermonContext.Sermons.Remove(sermon);
+            _sermonContext.SaveChanges();
             return RedirectToAction("Index");
         }
     }

@@ -31,7 +31,7 @@ namespace MediaScan.Tests
 
             //Note to self:  to get this EF repository to work, I had to initially set connection strings in temp folder to create mdf file.
             //From there, I was able to copy it into the bin\Debug folder.  Might have to do this on a new machine too?
-            //_repository = new MemSermonRepository();
+            //mockSermonContext.Object = new MemSermonRepository();
             //This ain't working.  
 
 
@@ -140,11 +140,11 @@ namespace MediaScan.Tests
 
             //foreach (var sermon in _context.Sermons.OrderByDescending(s => s.Id).ToList())
             //{
-            //    _repository.DeleteSermon(sermon.Id);
+            //    mockSermonContext.Object.DeleteSermon(sermon.Id);
             //    _context.DeleteObject(order.SalesOrderDetails.First());
             //}
 
-            //_repository.GetSermons().ToList().ForEach()                    
+            //mockSermonContext.Object.GetSermons().ToList().ForEach()                    
 
             Directory.CreateDirectory("Sermons");
             var johnMp3 = File.Create(@"Sermons\JohnSmith_TheTestSermon.mp3");
@@ -166,12 +166,19 @@ namespace MediaScan.Tests
         [TestMethod]
         public void ItCanCreateSermonsFromFilenames()
         {
+            //Arrange
+            //See setup...Preacher Bill Wyatt already in DB
             MediaScan mediaScan = new MediaScan("Sermons", mockSermonContext.Object);
-            mockSermonSet.Verify(m => m.Add(It.IsAny<Sermon>()), Times.Exactly(3));
-            mockPreacherSet.Verify(m => m.Add(It.IsAny<Preacher>()), Times.Exactly(3));
+
+            //Act
+            mediaScan.Scan();
+
+            //Assert
+            mockSermonSet.Verify(m => m.Add(It.IsAny<Sermon>()), Times.Exactly(3), "Wrong number of sermons added.");
+            mockPreacherSet.Verify(m => m.Add(It.IsAny<Preacher>()), Times.Exactly(2), "Wrong number of preachers added.");
             mockSermonContext.Verify(m => m.SaveChanges(), Times.Once());
 
-            //Assert.IsTrue(_repository.GetSermons().Any(s => s.Title == "The Test Sermon"
+            //Assert.IsTrue(mockSermonContext.Object.GetSermons().Any(s => s.Title == "The Test Sermon"
             //                                                        && s.SermonPreacher.FirstName == "John"
             //                                                        && s.SermonPreacher.LastName == "Smith"
             //                                                        && s.SermonLocation.City == "Albuquerque"
@@ -180,10 +187,10 @@ namespace MediaScan.Tests
             //                                                        && string.IsNullOrEmpty(s.Comment)
             //                                                        && string.IsNullOrEmpty(s.Passages)), "The Test Sermon not found");
 
-            //Assert.IsTrue(_repository.GetSermons().Any(s => s.Title == "Luke 12a"
+            //Assert.IsTrue(mockSermonContext.Object.GetSermons().Any(s => s.Title == "Luke 12a"
             //                                                        && s.SermonPreacher.FirstName == "Bob"), "Luke 12a not found");
 
-            //Assert.IsTrue(_repository.GetSermons().Any(s => s.Title == "This Is A Test Sermon"
+            //Assert.IsTrue(mockSermonContext.Object.GetSermons().Any(s => s.Title == "This Is A Test Sermon"
             //                                                        && s.SermonPreacher.FirstName == "Bill"), "This is a Test Sermon not found");
         }
 
@@ -191,73 +198,75 @@ namespace MediaScan.Tests
         public void ItCanLookUpPreachersByFirstName()
         {
             //Arrange
-            //_repository.InsertPreacher(new Preacher() { FirstName = "Bill", LastName = "Wyatt" });
-            //_repository.Save();
+            //mockSermonContext.Object.InsertPreacher(new Preacher() { FirstName = "Bill", LastName = "Wyatt" });
+            //mockSermonContext.Object.Save();
 
             //Act
             MediaScan mediaScan = new MediaScan("Sermons", mockSermonContext.Object);
 
             //Assert
-            //Assert.IsTrue(_repository.GetSermons().Any(s => s.Title == "This Is A Test Sermon"
+            //Assert.IsTrue(mockSermonContext.Object.GetSermons().Any(s => s.Title == "This Is A Test Sermon"
             //                                                        && s.SermonPreacher.FirstName == "Bill"
             //                                                        && s.SermonPreacher.LastName == "Wyatt"), "Preacher Bill Wyatt not found");
         }
 
-        //[TestMethod]
-        //public void ItAvoidsDuplicateSermons()
-        //{
-        //    //Arrange
-        //    MediaScan mediaScan = new MediaScan("Sermons", _repository);
+        [TestMethod]
+        public void ItAvoidsDuplicateSermons()
+        {
+            //Arrange
+            MediaScan mediaScan = new MediaScan("Sermons", mockSermonContext.Object);
 
-        //    //Act
-        //    mediaScan = new MediaScan("Sermons", _repository);
+            //Act
+            mediaScan = new MediaScan("Sermons", mockSermonContext.Object);
 
-        //    //Assert
-        //    Assert.AreEqual(_repository.GetSermons().Count(s => s.Title == "This Is A Test Sermon"), 1, "Duplicate sermons found");
-        //}
+            //Assert
+            Assert.AreEqual(mockSermonContext.Object.Sermons.Count(s => s.Title == "This Is A Test Sermon"), 1, "Duplicate sermons found");
+        }
 
-        //[TestMethod]
-        //public void ItAvoidsDuplicatePreachers()
-        //{
-        //    //Arrange
-        //    if (!_repository.GetPreachers().Any(p => p.FirstName == "Unit" && p.LastName == "Test"))
-        //    {
-        //        _repository.InsertPreacher(new Preacher() { FirstName = "Unit", LastName = "Test" });
-        //        _repository.Save();
-        //    }
-        //    MediaScan mediaScan = new MediaScan("Sermons", _repository);
+        [TestMethod]
+        public void ItAvoidsDuplicatePreachers()
+        {
+            //Arrange
+            if (!mockSermonContext.Object.Preachers.Any(p => p.FirstName == "Unit" && p.LastName == "Test"))
+            {
+                mockSermonContext.Object.Preachers.Add(new Preacher() { FirstName = "Unit", LastName = "Test" });
+                mockSermonContext.Object.SaveChanges();
+            }
+            MediaScan mediaScan = new MediaScan("Sermons", mockSermonContext.Object);
 
-        //    var bill2Mp3 = File.Create(@"Sermons\Unit_This_Is_Another_Test_Sermon.mp3");
-        //    bill2Mp3.Close();
+            var bill2Mp3 = File.Create(@"Sermons\Unit_This_Is_Another_Test_Sermon.mp3");
+            bill2Mp3.Close();
 
-        //    File.Delete(bill2Mp3.ToString());
+            File.Delete(bill2Mp3.ToString());
 
-        //    //Act
-        //    mediaScan = new MediaScan("Sermons", _repository);
+            //Act
+            mediaScan = new MediaScan("Sermons", mockSermonContext.Object);
 
-        //    //Assert
-        //    Assert.IsTrue(_repository.GetSermons().Any(s => s.Title == "This Is Another Test Sermon"
-        //                                                            && s.SermonPreacher.FirstName == "Unit"
-        //                                                            && s.SermonPreacher.LastName == "Test"), "Preacher Unit Test not found");
+            //Assert
+            Assert.IsTrue(mockSermonContext.Object.Sermons.Any(s => s.Title == "This Is Another Test Sermon"
+                                                                    && s.SermonPreacher.FirstName == "Unit"
+                                                                    && s.SermonPreacher.LastName == "Test"), "Preacher Unit Test not found");
 
-        //    //TODO: WHEREYOUWERE MediaScan is creating duplicate preachers, regardless of what this says.
-        //    Assert.AreEqual(_repository.GetPreachers().Count(p => p.FirstName == "Unit"), 1, "Duplicate preachers found");
-        //}
+            //TODO: WHEREYOUWERE MediaScan is creating duplicate preachers, regardless of what this says.
+            Assert.AreEqual(mockSermonContext.Object.Preachers.Count(p => p.FirstName == "Unit"), 1, "Duplicate preachers found");
+        }
 
-        //[TestMethod]
-        //public void ASermonCanBeDeleted()
-        //{
-        //    //Arrange
-        //    Sermon sermon = new Sermon() { Title = "Sermon to Delete" };
-        //    _repository.InsertSermon(sermon);
-        //    //_repository.InsertPreacher(new Preacher() { FirstName = "John", LastName = "Smith" });
-        //    _repository.Save();
+        [TestMethod]
+        public void ASermonCanBeDeleted()
+        {
+            //Arrange
+            Sermon sermon = new Sermon() { Title = "Sermon to Delete" };
+            mockSermonContext.Object.Sermons.Add(sermon);
+            //mockSermonContext.Object.InsertPreacher(new Preacher() { FirstName = "John", LastName = "Smith" });
+            mockSermonContext.Object.SaveChanges();
 
-        //    //Act
-        //    _repository.DeleteSermon(sermon.Id);
+            //Act
+            mockSermonContext.Object.Sermons.Attach(sermon);
+            mockSermonContext.Object.Sermons.Remove(sermon);
+            mockSermonContext.Object.SaveChanges();
 
-        //    //Assert
-        //    Assert.IsFalse(_repository.GetSermons().Any(s => s.Title == "Sermon to Delete"), "Sermon to Delete not found");
-        //}
+            //Assert
+            Assert.IsFalse(mockSermonContext.Object.Sermons.Any(s => s.Title == "Sermon to Delete"), "Sermon to Delete not found");
+        }
     }
 }
