@@ -161,6 +161,7 @@ namespace MediaScan.Tests
             Directory.Delete("Sermons", true);
         }
 
+        //TODO: Test for Nathan A vs Nathan C issues
 
         [TestMethod]
         public void ItCanCreateSermonsFromFilenames()

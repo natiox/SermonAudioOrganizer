@@ -21,7 +21,7 @@ namespace SermonAudioOrganizer.Controllers
 
         public ActionResult AddMedia(int sermonId = 0)
         {
-            AddMediaViewModel addMediaViewModel = new AddMediaViewModel() { SermonId = sermonId, AllMediaList = repository.GetMedias().ToList() };
+            AddMediaViewModel addMediaViewModel = new AddMediaViewModel() { SermonId = sermonId, AllMediaList = _sermonContext.Medias.ToList() };
             return View(addMediaViewModel);
         }
 
@@ -34,14 +34,18 @@ namespace SermonAudioOrganizer.Controllers
         [HttpPost]
         public ActionResult AddMediaToSermon(AddMediaConfirmViewModel addMediaConfirmViewModel)
         {
-            repository.GetSermonById(addMediaConfirmViewModel.SermonId).SermonMedia.Add(repository.GetMediaById(addMediaConfirmViewModel.MediaId));
+            var media = _sermonContext.Medias.Find(addMediaConfirmViewModel.MediaId);
+            var sermon = _sermonContext.Sermons.Find(addMediaConfirmViewModel.SermonId);
+            sermon.SermonMedia.Add(media);
+            _sermonContext.SaveChanges();
             return RedirectToAction("Edit", new { id = addMediaConfirmViewModel.SermonId });
         }
         
         [HttpPost]
         public ActionResult RemoveMediaFromSermon(int mediaId = 0, int sermonId = 0)
         {
-            repository.GetSermonById(sermonId).SermonMedia.Add(repository.GetMediaById(mediaId));
+            var media = _sermonContext.Medias.Find(mediaId);
+            _sermonContext.Sermons.Find(sermonId).SermonMedia.Remove(media);
             return View();
         }
 
@@ -50,7 +54,7 @@ namespace SermonAudioOrganizer.Controllers
 
         public ActionResult Index()
         {
-            return View(repository.GetSermons().OrderByDescending(s => s.RecordingDate).ToList());
+            return View(_sermonContext.Sermons.OrderByDescending(s => s.RecordingDate).ToList());
         }
 
         //
@@ -59,7 +63,7 @@ namespace SermonAudioOrganizer.Controllers
         public ActionResult Details(int id = 0)
         {
             //TODO: Need search of various types.
-            Sermon sermon = repository.GetSermonById(id);
+            Sermon sermon = _sermonContext.Sermons.Find(id);
             if (sermon == null)
             {
                 return HttpNotFound();
@@ -74,8 +78,8 @@ namespace SermonAudioOrganizer.Controllers
         {
             Sermon sermon = new Sermon();
 
-            SermonEditViewModel sermonEditViewModel = new SermonEditViewModel(sermon, repository.GetLocations(), repository.GetPreachers(),
-                repository.GetSerieses(), repository.GetSections());
+            SermonEditViewModel sermonEditViewModel = new SermonEditViewModel(sermon, _sermonContext.Locations, _sermonContext.Preachers,
+                _sermonContext.Serieses, _sermonContext.Sections);
             return View(sermonEditViewModel);
         }
 
@@ -93,10 +97,10 @@ namespace SermonAudioOrganizer.Controllers
                 RecordingDate = sermonViewModel.RecordingDate,
                 SectionIndex = sermonViewModel.SectionIndex,
                 SeriesIndex = sermonViewModel.SeriesIndex,
-                SermonLocation = (sermonViewModel.LocationId != null) ? repository.GetLocationById(sermonViewModel.LocationId.Value) : null,
-                SermonPreacher = (sermonViewModel.PreacherId != null) ? repository.GetPreacherById(sermonViewModel.PreacherId.Value) : null,
-                SermonSeries = (sermonViewModel.SeriesId != null) ? repository.GetSeriesById(sermonViewModel.SeriesId.Value) : null,
-                SermonSection = (sermonViewModel.SectionId != null) ? repository.GetSectionById(sermonViewModel.SectionId.Value) : null,
+                SermonLocation = (sermonViewModel.LocationId != null) ? _sermonContext.Locations.Find(sermonViewModel.LocationId.Value) : null,
+                SermonPreacher = (sermonViewModel.PreacherId != null) ? _sermonContext.Preachers.Find(sermonViewModel.PreacherId.Value) : null,
+                SermonSeries = (sermonViewModel.SeriesId != null) ? _sermonContext.Serieses.Find(sermonViewModel.SeriesId.Value) : null,
+                SermonSection = (sermonViewModel.SectionId != null) ? _sermonContext.Sections.Find(sermonViewModel.SectionId.Value) : null,
                 Title = sermonViewModel.Title,
                 Topic = sermonViewModel.Topic
                 // TODO: SermonMedia = repository.GetMediaById(sermonViewModel.SermonMedia.Media
@@ -104,8 +108,8 @@ namespace SermonAudioOrganizer.Controllers
 
             if (ModelState.IsValid)
             {
-                repository.InsertSermon(sermon);
-                repository.Save();
+                _sermonContext.Sermons.Add(sermon);
+                _sermonContext.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -117,7 +121,7 @@ namespace SermonAudioOrganizer.Controllers
 
         public ActionResult Edit(int id = 0)
         {
-            Sermon sermon = repository.GetSermonById(id);
+            Sermon sermon = _sermonContext.Sermons.Find(id);
             if (sermon == null)
             {
                 return HttpNotFound();
