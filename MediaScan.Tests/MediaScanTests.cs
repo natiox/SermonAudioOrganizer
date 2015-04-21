@@ -175,10 +175,12 @@ namespace MediaScan.Tests
 
             //Assert
             mockSermonSet.Verify(m => m.Add(It.IsAny<Sermon>()), Times.Exactly(3), "Wrong number of sermons added.");
+            //One of the preachers was already in the DB
             mockPreacherSet.Verify(m => m.Add(It.IsAny<Preacher>()), Times.Exactly(2), "Wrong number of preachers added.");
             mockSermonContext.Verify(m => m.SaveChanges(), Times.Once());
 
-            //Assert.IsTrue(mockSermonContext.Object.GetSermons().Any(s => s.Title == "The Test Sermon"
+            //Can't do these because mock currently can't be inserted into.
+            //Assert.IsTrue(mockSermonContext.Object.Sermons.Any(s => s.Title == "The Test Sermon"
             //                                                        && s.SermonPreacher.FirstName == "John"
             //                                                        && s.SermonPreacher.LastName == "Smith"
             //                                                        && s.SermonLocation.City == "Albuquerque"
@@ -195,60 +197,34 @@ namespace MediaScan.Tests
         }
 
         [TestMethod]
-        public void ItCanLookUpPreachersByFirstName()
-        {
-            //Arrange
-            //mockSermonContext.Object.InsertPreacher(new Preacher() { FirstName = "Bill", LastName = "Wyatt" });
-            //mockSermonContext.Object.Save();
-
-            //Act
-            MediaScan mediaScan = new MediaScan("Sermons", mockSermonContext.Object);
-
-            //Assert
-            //Assert.IsTrue(mockSermonContext.Object.GetSermons().Any(s => s.Title == "This Is A Test Sermon"
-            //                                                        && s.SermonPreacher.FirstName == "Bill"
-            //                                                        && s.SermonPreacher.LastName == "Wyatt"), "Preacher Bill Wyatt not found");
-        }
-
-        [TestMethod]
         public void ItAvoidsDuplicateSermons()
         {
             //Arrange
+            var existingMp3 = File.Create(@"Sermons\BillWyatt_TestLesson.mp3");
+            existingMp3.Close();
             MediaScan mediaScan = new MediaScan("Sermons", mockSermonContext.Object);
 
             //Act
-            mediaScan = new MediaScan("Sermons", mockSermonContext.Object);
+            mediaScan.Scan();
 
             //Assert
-            Assert.AreEqual(mockSermonContext.Object.Sermons.Count(s => s.Title == "This Is A Test Sermon"), 1, "Duplicate sermons found");
+            mockSermonSet.Verify(m => m.Add(It.Is<Sermon>(s => s.Title == "Test Lesson")), Times.Never, "Duplicate sermon added.");
+
+            //Cleanup
+            File.Delete(existingMp3.ToString());
         }
 
         [TestMethod]
         public void ItAvoidsDuplicatePreachers()
         {
             //Arrange
-            if (!mockSermonContext.Object.Preachers.Any(p => p.FirstName == "Unit" && p.LastName == "Test"))
-            {
-                mockSermonContext.Object.Preachers.Add(new Preacher() { FirstName = "Unit", LastName = "Test" });
-                mockSermonContext.Object.SaveChanges();
-            }
             MediaScan mediaScan = new MediaScan("Sermons", mockSermonContext.Object);
 
-            var bill2Mp3 = File.Create(@"Sermons\Unit_This_Is_Another_Test_Sermon.mp3");
-            bill2Mp3.Close();
-
-            File.Delete(bill2Mp3.ToString());
-
             //Act
-            mediaScan = new MediaScan("Sermons", mockSermonContext.Object);
+            mediaScan.Scan();
 
             //Assert
-            Assert.IsTrue(mockSermonContext.Object.Sermons.Any(s => s.Title == "This Is Another Test Sermon"
-                                                                    && s.SermonPreacher.FirstName == "Unit"
-                                                                    && s.SermonPreacher.LastName == "Test"), "Preacher Unit Test not found");
-
-            //TODO: WHEREYOUWERE MediaScan is creating duplicate preachers, regardless of what this says.
-            Assert.AreEqual(mockSermonContext.Object.Preachers.Count(p => p.FirstName == "Unit"), 1, "Duplicate preachers found");
+            mockPreacherSet.Verify(m => m.Add(It.Is<Preacher>(p => p.FirstName == "Bill")), Times.Never, "Duplicate preacher added.");
         }
 
         [TestMethod]
