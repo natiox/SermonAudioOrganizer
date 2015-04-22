@@ -1,6 +1,7 @@
 namespace SermonAudioOrganizer.Domain.Migrations
 {
     using System;
+    using System.Collections.Generic;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
@@ -26,6 +27,25 @@ namespace SermonAudioOrganizer.Domain.Migrations
             //      new Person { FullName = "Rowan Miller" }
             //    );
             //
+
+
+            context.Sermons.AddOrUpdate(
+                new Sermon()
+                {
+                    SermonPreacher = new Preacher() { FirstName = "John", LastName = "Smith" },
+                    SermonLocation = new Location() { City = "Albuquerque", State = "NM", Venue = "Church of Christ on Vermont Street" },
+                    Comment = "This is a comment.",
+                    Passages = "Matt 5, Mark 4",
+                    RecordingDate = new DateTime(2012, 2, 2),
+                    SectionIndex = 1,
+                    SeriesIndex = "1a",
+                    SermonMedia = new List<Media>() { new Media() { Name = "Test.mp3", Type = MediaType.MP3 } },
+                    SermonSection = new Section() { Title = "Test Section" },
+                    SermonSeries = new Series() { Title = "Test Series" },
+                    Title = "Test Sermon",
+                    Topic = "Justice"
+                }
+                );
         }
     }
 }
