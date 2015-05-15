@@ -65,6 +65,11 @@ namespace MediaScan.Tests
                     Id = 1,
                     FirstName = "Bill",
                     LastName="Wyatt"
+                },                
+                new Preacher 
+                {
+                    Id = 2,
+                    FirstName = "John"
                 }
             }.AsQueryable();
             mockPreacherSet.As<IQueryable<Preacher>>().Setup(m => m.Provider).Returns(preacherList.Provider);
@@ -196,7 +201,27 @@ namespace MediaScan.Tests
             //                                                        && s.SermonPreacher.FirstName == "Bill"), "This is a Test Sermon not found");
         }
 
-        [TestMethod]
+        [TestMethod, Ignore, Description("This may not be testable without being able to test update")]
+        public void ItUpdatesPreacherLastNameIfNotPresent()
+        {
+            //Arrange
+            var existingMp3 = File.Create(@"Sermons\JohnSmith_TestLesson5.mp3");
+            existingMp3.Close();
+            MediaScan mediaScan = new MediaScan("Sermons", mockSermonContext.Object);
+
+            //Act
+            mediaScan.Scan();
+
+            //Assert
+            //mockPreacherSet.Verify(m => m.Add(It.Is<Preacher>(p => p.FirstName == "John")), Times.Never, "Duplicate preacher added.");
+            //Can't really test update
+            mockSermonContext.Verify(m => m.SaveChanges(), Times.Once);
+
+            //Cleanup
+            File.Delete(existingMp3.ToString());
+        }
+
+        [TestMethod, Description("This is currently a problem in the EF version")]
         public void ItAvoidsDuplicateSermons()
         {
             //Arrange
