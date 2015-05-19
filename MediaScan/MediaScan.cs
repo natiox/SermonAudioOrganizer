@@ -35,10 +35,10 @@ namespace MediaScan
             {
                 defaultLocation = locations
                 .Where(l => l.City == "Albuquerque" && l.Venue == "Church of Christ")
-                .SingleOrDefault();
+                .FirstOrDefault();
             }
             else
-            {
+            { 
                 defaultLocation = new Location() { City = "Albuquerque", State = "NM", Venue = "Church of Christ" };
                 _context.Locations.Add(defaultLocation);
                 _context.SaveChanges();
@@ -86,19 +86,23 @@ namespace MediaScan
                     }
 
                     Preacher preacher;
+                    //Find the preacher if it exists.
+
                     if (string.IsNullOrEmpty(lastName))
                     {
-                        preacher = _context.Preachers.Where(p => p.FirstName == firstName).SingleOrDefault();
+                        preacher = _context.Preachers.Where(p => p.FirstName == firstName).FirstOrDefault();
                     }
                     else
                     {
-                        preacher = _context.Preachers.Where(p => p.FirstName == firstName && p.LastName == lastName).SingleOrDefault();
+                        preacher = _context.Preachers.Where(p => p.FirstName == firstName && p.LastName == lastName).FirstOrDefault();
                     }
 
                     if (preacher == null)
                     {
                         preacher = new Preacher() { FirstName = firstName, LastName = lastName };
                         _context.Preachers.Add(preacher);
+                        //Save preacher for use in next round
+                        _context.SaveChanges();
                     }
 
                     //TODO: Try to parse out passages from name

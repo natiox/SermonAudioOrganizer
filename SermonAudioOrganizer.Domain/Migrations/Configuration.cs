@@ -6,7 +6,7 @@ namespace SermonAudioOrganizer.Domain.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<SermonAudioOrganizer.Domain.SermonContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<SermonContext>
     {
         public Configuration()
         {

@@ -1,8 +1,13 @@
 ﻿using SermonAudioOrganizer.Domain;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
 namespace MediaScan
 {
-    internal static class Program
+    class Program
     {
         public static int Main(string[] args)
         {
@@ -16,7 +21,7 @@ namespace MediaScan
             Console.WriteLine("Existing sermons:");
             foreach (var sermon in context.Sermons)
             {
-                Console.WriteLine(string.Format("{0} by {1} {2} dated {3} in {4}", 
+                Console.WriteLine(string.Format("{0} by {1} {2} dated {3} in {4}",
                     sermon.Title, sermon.SermonPreacher.FirstName, sermon.SermonPreacher.LastName, sermon.RecordingDate.ToShortDateString(), sermon.SermonLocation.Venue));
             }
 
@@ -28,4 +33,4 @@ namespace MediaScan
             return 0;
         }
     }
-} 
+}

@@ -182,7 +182,7 @@ namespace MediaScan.Tests
             mockSermonSet.Verify(m => m.Add(It.IsAny<Sermon>()), Times.Exactly(3), "Wrong number of sermons added.");
             //One of the preachers was already in the DB
             mockPreacherSet.Verify(m => m.Add(It.IsAny<Preacher>()), Times.Exactly(2), "Wrong number of preachers added.");
-            mockSermonContext.Verify(m => m.SaveChanges(), Times.Once());
+            mockSermonContext.Verify(m => m.SaveChanges(), Times.Exactly(3));
 
             //Can't do these because mock currently can't be inserted into.
             //Assert.IsTrue(mockSermonContext.Object.Sermons.Any(s => s.Title == "The Test Sermon"
@@ -221,7 +221,7 @@ namespace MediaScan.Tests
             File.Delete(existingMp3.ToString());
         }
 
-        [TestMethod, Description("This is currently a problem in the EF version")]
+        [TestMethod]
         public void ItAvoidsDuplicateSermons()
         {
             //Arrange
@@ -239,15 +239,18 @@ namespace MediaScan.Tests
             File.Delete(existingMp3.ToString());
         }
 
-        [TestMethod]
+        [TestMethod, Description("This is currently a problem in the EF version")]
         public void ItAvoidsDuplicatePreachers()
         {
+            //Context already has a "Bill"
             //Arrange
             MediaScan mediaScan = new MediaScan("Sermons", mockSermonContext.Object);
 
+            //Scan new sermon by Bill
             //Act
             mediaScan.Scan();
 
+            //Make sure it used the old one
             //Assert
             mockPreacherSet.Verify(m => m.Add(It.Is<Preacher>(p => p.FirstName == "Bill")), Times.Never, "Duplicate preacher added.");
         }
