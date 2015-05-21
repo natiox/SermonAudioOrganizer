@@ -54,9 +54,9 @@ namespace SermonAudioOrganizer.Controllers
         //
         // GET: /Sermon/
 
-        public ActionResult Index(int? page)
+        public ActionResult Index(int? page, string searchTitle = "")
         {
-            var sermons = _sermonContext.Sermons.OrderByDescending(s => s.RecordingDate);
+            var sermons = _sermonContext.Sermons.Where(s => s.Title.Contains(searchTitle)).OrderByDescending(s => s.RecordingDate);
 
             var pageNumber = page ?? 1; // if no page was specified in the querystring, default to the first page (1)
             var onePageOfSermons = sermons.ToPagedList(pageNumber, 25); // will only contain 25 products max because of the pageSize

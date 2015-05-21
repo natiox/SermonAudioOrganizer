@@ -14,6 +14,9 @@ namespace MediaScan
             if (args.Length != 1)
             {
                 Console.WriteLine("Usage: MediaScan <mp3 path>");
+                Console.WriteLine("Press any key to finish");
+                Console.ReadKey();
+                return 1;
             }
             SermonContext context = new SermonContext();
             MediaScan mediaScan = new MediaScan(args[0], context);
