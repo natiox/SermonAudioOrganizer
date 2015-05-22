@@ -53,7 +53,6 @@ namespace SermonAudioOrganizer.Controllers
 
         //
         // GET: /Sermon/
-
         public ActionResult Index(int? page, string searchTitle = "")
         {
             var sermons = _sermonContext.Sermons.Where(s => s.Title.Contains(searchTitle)).OrderByDescending(s => s.RecordingDate);
@@ -65,11 +64,9 @@ namespace SermonAudioOrganizer.Controllers
         }
 
         //
-        // GET: /Sermon/Details/5
-
+        // TODO: GET: /Sermon/Details/5
         public ActionResult Details(int id = 0)
         {
-            //TODO: Need search of various types.
             Sermon sermon = _sermonContext.Sermons.Find(id);
             if (sermon == null)
             {
@@ -80,7 +77,6 @@ namespace SermonAudioOrganizer.Controllers
 
         //
         // GET: /Sermon/Create
-
         public ActionResult Create()
         {
             Sermon sermon = new Sermon();
