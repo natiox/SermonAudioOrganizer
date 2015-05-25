@@ -53,13 +53,27 @@ namespace SermonAudioOrganizer.Controllers
 
         //
         // GET: /Sermon/
-        public ActionResult Index(int? page, string searchTitle = "")
+        public ActionResult Index(int? page, int? preacherId, int? seriesId, string searchTitle = "")
         {
-            var sermons = _sermonContext.Sermons.Where(s => s.Title.Contains(searchTitle)).OrderByDescending(s => s.RecordingDate);
+            var sermons = from s in _sermonContext.Sermons
+                          select s;
 
+            if (!string.IsNullOrEmpty(searchTitle))
+                sermons = _sermonContext.Sermons.Where(s => s.Title.Contains(searchTitle));
+
+            if (preacherId != null)
+                sermons = _sermonContext.Sermons.Where(s => s.SermonPreacher.Id == preacherId);
+
+            if (seriesId != null)
+                sermons = _sermonContext.Sermons.Where(s => s.SermonSeries.Id == seriesId);
+
+            sermons = sermons.OrderByDescending(s => s.RecordingDate);
             var pageNumber = page ?? 1; // if no page was specified in the querystring, default to the first page (1)
             var onePageOfSermons = sermons.ToPagedList(pageNumber, 25); // will only contain 25 products max because of the pageSize
 
+            ViewBag.preacherId = preacherId;
+            ViewBag.searchTitle = searchTitle;
+            ViewBag.seriesId = seriesId;
             return View(onePageOfSermons);
         }
 

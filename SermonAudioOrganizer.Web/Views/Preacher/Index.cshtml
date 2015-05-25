@@ -20,17 +20,18 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
+@foreach (var preacher in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.FirstName)
+            @Html.DisplayFor(modelItem => preacher.FirstName)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.LastName)
+            @Html.DisplayFor(modelItem => preacher.LastName)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            @Html.ActionLink("Sermons", "Index", "Sermon", new { preacherId = preacher.Id }, null) |
+            @Html.ActionLink("Edit", "Edit", new { id = preacher.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id = preacher.Id })
         </td>
     </tr>
 }

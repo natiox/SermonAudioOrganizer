@@ -81,4 +81,4 @@
 
 </table>
 
-@Html.PagedListPager((IPagedList)Model, page => Url.Action("Index", new { page = page }))
+@Html.PagedListPager((IPagedList)Model, page => Url.Action("Index", new { page = page, preacherId = ViewBag.preacherId, seriesId = ViewBag.seriesId, searchTitle = ViewBag.searchTitle }))

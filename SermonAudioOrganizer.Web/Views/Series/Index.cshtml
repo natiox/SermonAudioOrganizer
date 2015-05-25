@@ -17,14 +17,15 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
+@foreach (var series in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Title)
+            @Html.DisplayFor(modelItem => series.Title)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            @Html.ActionLink("Sermons", "Index", "Sermon", new { seriesId = series.Id }, null) |
+            @Html.ActionLink("Edit", "Edit", new { id = series.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { id = series.Id })
         </td>
     </tr>
 }
