@@ -59,13 +59,13 @@ namespace SermonAudioOrganizer.Controllers
                           select s;
 
             if (!string.IsNullOrEmpty(searchTitle))
-                sermons = _sermonContext.Sermons.Where(s => s.Title.Contains(searchTitle));
+                sermons = sermons.Where(s => s.Title.Contains(searchTitle));
 
             if (preacherId != null)
-                sermons = _sermonContext.Sermons.Where(s => s.SermonPreacher.Id == preacherId);
+                sermons = sermons.Where(s => s.SermonPreacher.Id == preacherId);
 
             if (seriesId != null)
-                sermons = _sermonContext.Sermons.Where(s => s.SermonSeries.Id == seriesId);
+                sermons = sermons.Where(s => s.SermonSeries.Id == seriesId);
 
             sermons = sermons.OrderByDescending(s => s.RecordingDate);
             var pageNumber = page ?? 1; // if no page was specified in the querystring, default to the first page (1)

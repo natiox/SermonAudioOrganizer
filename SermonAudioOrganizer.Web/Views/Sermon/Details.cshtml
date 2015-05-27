@@ -1,0 +1,133 @@
+﻿@model SermonAudioOrganizer.Domain.Sermon
+
+@{
+    ViewBag.Title = "Sermon Details";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@if (!string.IsNullOrEmpty(Model.Title))
+{
+    <p>
+        @Html.LabelFor(model => model.Title):
+        @Html.DisplayFor(model => model.Title)
+    </p>
+}
+
+<p>
+    @Html.LabelFor(model => model.RecordingDate):
+    @Html.DisplayFor(model => model.RecordingDate)
+</p>
+
+@if (!string.IsNullOrEmpty(Model.Topic))
+{
+    <p>
+        @Html.LabelFor(model => model.Topic):
+        @Html.DisplayFor(model => model.Topic)
+    </p>
+}
+
+@if (!string.IsNullOrEmpty(Model.Passages))
+{
+    <p>
+        @Html.LabelFor(model => model.Passages):
+        @Html.DisplayFor(model => model.Passages)
+    </p>
+}
+
+@if (!string.IsNullOrEmpty(Model.Comment))
+{
+    <p>
+        @Html.LabelFor(model => model.Comment):
+        @Html.DisplayFor(model => model.Comment)
+    </p>
+}
+
+@if (Model.SermonLocation != null)
+{
+    <p>
+        <label>Location:</label>
+        @Html.DisplayFor(model => model.SermonLocation.Venue) @Html.DisplayFor(model => model.SermonLocation.City), @Html.DisplayFor(model => model.SermonLocation.State)
+    </p>
+}
+
+<p>
+    <label>Preacher:</label>
+    @Html.DisplayFor(model => model.SermonPreacher.FirstName) @Html.DisplayFor(model => model.SermonPreacher.LastName)
+</p>
+
+@if (Model.SermonSeries != null)
+{
+    <p>
+        <label>
+            Series:
+        </label>
+        @Html.DisplayFor(model => model.SermonSeries.Title)
+    </p>
+}
+
+@if (!string.IsNullOrEmpty(Model.SeriesIndex))
+{
+    <p>
+        @Html.LabelFor(model => model.SeriesIndex):
+        @Html.DisplayFor(model => model.SeriesIndex)
+    </p>
+}
+
+@if (Model.SermonSection != null)
+{
+    <p>
+        <label>
+            Section:
+        </label>
+        @Html.DisplayFor(model => model.SermonSection.Title)
+    </p>
+}
+
+@if (Model.SectionIndex.HasValue)
+{
+    <p>
+        @Html.LabelFor(model => model.SectionIndex):
+        @Html.DisplayFor(model => model.SectionIndex)
+    </p>
+}
+
+<h3>Media</h3>
+<p>
+    @if (Model.SermonMedia != null)
+    {
+        <div>
+            <table class="table">
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Type
+                    </th>
+                    <th></th>
+                </tr>
+
+                @foreach (var media in Model.SermonMedia)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => media.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => media.Type)
+                        </td>
+                        <td>
+                            @Html.ActionLink("Remove Media", "RemoveMedia", new { sermonId = Model.Id, mediaId = media.Id }, null)
+                        </td>
+                    </tr>
+                }
+
+            </table>
+        </div>
+    }
+
+
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }

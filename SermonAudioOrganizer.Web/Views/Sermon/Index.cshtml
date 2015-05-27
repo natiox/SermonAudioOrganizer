@@ -5,12 +5,38 @@
 }
 
 <h2>Sermons</h2>
+@if (!string.IsNullOrEmpty(ViewBag.searchTitle))
+{
+    <h4>
+        Current Search: @ViewBag.searchTitle
+    </h4>
+}
+@if ((ViewBag.preacherId ?? 0) > 0)
+{
+    <h4>
+        Current Preacher: @Model.First().SermonPreacher.FirstName @Model.First().SermonPreacher.LastName
+    </h4>
+}
+@if (!string.IsNullOrEmpty(ViewBag.seriesId))
+{
+    <h4>
+        Current Series: @Model.First().SermonSeries.Title
+    </h4>
+}
 
 @using (Html.BeginForm("Index", "Sermon", FormMethod.Get, new { @class = "form-inline" }))
 {
     <div class="form-group">
         <label for="searchTitle">Search by title</label>
         @Html.TextBox("searchTitle", ViewBag.CurrentFilter as string, new { @class = "form-control" })
+        @if ((ViewBag.preacherId ?? 0) > 0)
+        {
+            <input type="hidden" name="preacherId" id="preacherId" value="@ViewBag.preacherId" />
+        }
+        @if (!string.IsNullOrEmpty(ViewBag.seriesId))
+        {
+            <input type="hidden" name="seriesId" id="seriesId" value="@ViewBag.seriesId" />
+        }
     </div>
     <input type="submit" value="Search" />
 }

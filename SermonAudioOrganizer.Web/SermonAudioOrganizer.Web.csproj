@@ -267,6 +267,7 @@
     <Content Include="Views\Sermon\Delete.cshtml" />
     <Content Include="Views\Sermon\Edit.cshtml" />
     <Content Include="Views\Sermon\Index.cshtml" />
+    <Content Include="Views\Sermon\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
