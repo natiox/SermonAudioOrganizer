@@ -22,7 +22,8 @@
         <td>
             @Html.DisplayFor(modelItem => item.Title)
         </td>
-        <td>
+        <td>            
+            @Html.ActionLink("Sermons", "Index", "Sermon", new { sectionId = item.Id }, null) |
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
             @Html.ActionLink("Delete", "Delete", new { id=item.Id })
         </td>

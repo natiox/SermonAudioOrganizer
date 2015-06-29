@@ -7,6 +7,8 @@ using System.Web;
 using System.Web.Mvc;
 using SermonAudioOrganizer.Domain;
 
+using PagedList;
+
 namespace SermonAudioOrganizer.Controllers
 {
     public class MediaController : Controller
@@ -16,9 +18,14 @@ namespace SermonAudioOrganizer.Controllers
         //
         // GET: /Media/
 
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
-            return View(db.Medias.ToList());
+            var media = from m in db.Medias
+                          select m;
+            media = media.OrderBy(m => m.Name);
+            var pageNumber = page ?? 1; // if no page was specified in the querystring, default to the first page (1)
+            var onePageOfMedia = media.ToPagedList(pageNumber, 25); // will only contain 25 products max because of the pageSize
+            return View(onePageOfMedia);
         }
         
         //

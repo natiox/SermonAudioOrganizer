@@ -25,6 +25,7 @@ namespace SermonAudioOrganizer.Controllers
         {
             AddMediaViewModel addMediaViewModel = new AddMediaViewModel() { SermonId = sermonId, AllMediaList = _sermonContext.Medias.ToList() };
             return View(addMediaViewModel);
+            //TODO: Need AddMediaConfirm
         }
 
         public ActionResult AddMediaToSermon(int mediaId = 0, int sermonId = 0)
@@ -53,7 +54,7 @@ namespace SermonAudioOrganizer.Controllers
 
         //
         // GET: /Sermon/
-        public ActionResult Index(int? page, int? preacherId, int? seriesId, string searchTitle = "")
+        public ActionResult Index(int? page, int? preacherId, int? seriesId, int? sectionId, int? locationId, string searchTitle = "")
         {
             var sermons = from s in _sermonContext.Sermons
                           select s;
@@ -67,6 +68,12 @@ namespace SermonAudioOrganizer.Controllers
             if (seriesId != null)
                 sermons = sermons.Where(s => s.SermonSeries.Id == seriesId);
 
+            if (sectionId != null)
+                sermons = sermons.Where(s => s.SermonSection.Id == sectionId);
+
+            if (locationId != null)
+                sermons = sermons.Where(s => s.SermonLocation.Id == locationId);
+
             sermons = sermons.OrderByDescending(s => s.RecordingDate);
             var pageNumber = page ?? 1; // if no page was specified in the querystring, default to the first page (1)
             var onePageOfSermons = sermons.ToPagedList(pageNumber, 25); // will only contain 25 products max because of the pageSize
@@ -74,6 +81,8 @@ namespace SermonAudioOrganizer.Controllers
             ViewBag.preacherId = preacherId;
             ViewBag.searchTitle = searchTitle;
             ViewBag.seriesId = seriesId;
+            ViewBag.sectionId = sectionId;
+            ViewBag.locationId = locationId;
             return View(onePageOfSermons);
         }
 

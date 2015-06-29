@@ -17,10 +17,16 @@
         Current Preacher: @Model.First().SermonPreacher.FirstName @Model.First().SermonPreacher.LastName
     </h4>
 }
-@if (!string.IsNullOrEmpty(ViewBag.seriesId))
+@if ((ViewBag.seriesId ?? 0) > 0)
 {
     <h4>
         Current Series: @Model.First().SermonSeries.Title
+    </h4>
+}
+@if ((ViewBag.locationId ?? 0) > 0)
+{
+    <h4>
+        Current Location: @Model.First().SermonLocation.Venue
     </h4>
 }
 
@@ -33,9 +39,13 @@
         {
             <input type="hidden" name="preacherId" id="preacherId" value="@ViewBag.preacherId" />
         }
-        @if (!string.IsNullOrEmpty(ViewBag.seriesId))
+        @if ((ViewBag.seriesId ?? 0) > 0)
         {
             <input type="hidden" name="seriesId" id="seriesId" value="@ViewBag.seriesId" />
+        }
+        @if ((ViewBag.locationId ?? 0) > 0)
+        {
+            <input type="hidden" name="locationId" id="locationId" value="@ViewBag.locationId" />
         }
     </div>
     <input type="submit" value="Search" />
@@ -107,4 +117,4 @@
 
 </table>
 
-@Html.PagedListPager((IPagedList)Model, page => Url.Action("Index", new { page = page, preacherId = ViewBag.preacherId, seriesId = ViewBag.seriesId, searchTitle = ViewBag.searchTitle }))
+@Html.PagedListPager((IPagedList)Model, page => Url.Action("Index", new { page = page, preacherId = ViewBag.preacherId, seriesId = ViewBag.seriesId, sectionId = ViewBag.sectionId, locationId = ViewBag.locationId, searchTitle = ViewBag.searchTitle }))
