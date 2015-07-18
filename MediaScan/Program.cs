@@ -25,7 +25,8 @@ namespace MediaScan
             foreach (var sermon in context.Sermons)
             {
                 Console.WriteLine(string.Format("{0} by {1} {2} dated {3} in {4}",
-                    sermon.Title, sermon.SermonPreacher.FirstName, sermon.SermonPreacher.LastName, sermon.RecordingDate.ToShortDateString(), sermon.SermonLocation.Venue));
+                    sermon.Title, sermon.SermonPreacher.FirstName, sermon.SermonPreacher.LastName, sermon.RecordingDate.ToShortDateString(), 
+                    sermon.SermonLocation == null ? "missing venue" : sermon.SermonLocation.Venue));
             }
 
             Console.WriteLine("Scanning input folder");

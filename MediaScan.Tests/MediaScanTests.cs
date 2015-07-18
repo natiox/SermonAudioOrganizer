@@ -51,7 +51,7 @@ namespace MediaScan.Tests
                     SeriesIndex = "1",
                     SectionIndex = 1
                 }
-            }.AsQueryable(); 
+            }.AsQueryable();
             mockSermonSet.As<IQueryable<Sermon>>().Setup(m => m.Provider).Returns(sermonList.Provider);
             mockSermonSet.As<IQueryable<Sermon>>().Setup(m => m.Expression).Returns(sermonList.Expression);
             mockSermonSet.As<IQueryable<Sermon>>().Setup(m => m.ElementType).Returns(sermonList.ElementType);
@@ -136,12 +136,12 @@ namespace MediaScan.Tests
             mockLocationSet.As<IQueryable<Location>>().Setup(m => m.ElementType).Returns(locationList.ElementType);
             mockLocationSet.As<IQueryable<Location>>().Setup(m => m.GetEnumerator()).Returns(locationList.GetEnumerator());
 
-            mockSermonContext.Setup(m => m.Sermons).Returns(mockSermonSet.Object); 
+            mockSermonContext.Setup(m => m.Sermons).Returns(mockSermonSet.Object);
             mockSermonContext.Setup(m => m.Preachers).Returns(mockPreacherSet.Object);
             mockSermonContext.Setup(m => m.Medias).Returns(mockMediaSet.Object);
             mockSermonContext.Setup(m => m.Serieses).Returns(mockSeriesSet.Object);
             mockSermonContext.Setup(m => m.Sections).Returns(mockSectionSet.Object);
-            mockSermonContext.Setup(m => m.Locations).Returns(mockLocationSet.Object); 
+            mockSermonContext.Setup(m => m.Locations).Returns(mockLocationSet.Object);
 
             //foreach (var sermon in _context.Sermons.OrderByDescending(s => s.Id).ToList())
             //{
@@ -154,7 +154,7 @@ namespace MediaScan.Tests
             Directory.CreateDirectory("Sermons");
             var johnMp3 = File.Create(@"Sermons\JohnSmith_TheTestSermon.mp3");
             johnMp3.Close();
-            var bobMp3 = File.Create(@"Sermons\Bob_Luke_12a.mp3");
+            var bobMp3 = File.Create(@"Sermons\Bob_Luke12a.mp3");
             bobMp3.Close();
             var billMp3 = File.Create(@"Sermons\Bill_This_Is_A_Test_Sermon.mp3");
             billMp3.Close();
@@ -177,28 +177,29 @@ namespace MediaScan.Tests
 
             //Act
             mediaScan.Scan();
-
+                
             //Assert
             mockSermonSet.Verify(m => m.Add(It.IsAny<Sermon>()), Times.Exactly(3), "Wrong number of sermons added.");
+
+            //splits between numbers and letters?
+            mockSermonSet.Verify(m => m.Add(It.Is<Sermon>(s => s.Title == "Luke 12 a"
+                && s.SermonPreacher.FirstName == "Bob")), Times.Exactly(1), "Missing Luke 12 a sermon.");
+
+            mockSermonSet.Verify(m => m.Add(It.Is<Sermon>(s => s.Title == "The Test Sermon"
+                                                                    && s.SermonPreacher.FirstName == "John"
+                                                                    && s.SermonPreacher.LastName == "Smith"
+                                                                    && s.SermonLocation.City == "Albuquerque"
+                                                                    && s.SermonLocation.State == "NM"
+                                                                    && s.SermonLocation.Venue == "Church of Christ"
+                                                                    && string.IsNullOrEmpty(s.Comment)
+                                                                    && string.IsNullOrEmpty(s.Passages))), Times.Exactly(1), "Missing The Test Sermon.");
+
+            mockSermonSet.Verify(m => m.Add(It.Is<Sermon>(s => s.Title == "This Is A Test Sermon"
+                                                                    && s.SermonPreacher.FirstName == "Bill")), Times.Exactly(1), "Missing A Test Sermon.");
             //One of the preachers was already in the DB
             mockPreacherSet.Verify(m => m.Add(It.IsAny<Preacher>()), Times.Exactly(2), "Wrong number of preachers added.");
             mockSermonContext.Verify(m => m.SaveChanges(), Times.Exactly(3));
 
-            //Can't do these because mock currently can't be inserted into.
-            //Assert.IsTrue(mockSermonContext.Object.Sermons.Any(s => s.Title == "The Test Sermon"
-            //                                                        && s.SermonPreacher.FirstName == "John"
-            //                                                        && s.SermonPreacher.LastName == "Smith"
-            //                                                        && s.SermonLocation.City == "Albuquerque"
-            //                                                        && s.SermonLocation.State == "NM"
-            //                                                        && s.SermonLocation.Venue == "Church of Christ"
-            //                                                        && string.IsNullOrEmpty(s.Comment)
-            //                                                        && string.IsNullOrEmpty(s.Passages)), "The Test Sermon not found");
-
-            //Assert.IsTrue(mockSermonContext.Object.GetSermons().Any(s => s.Title == "Luke 12a"
-            //                                                        && s.SermonPreacher.FirstName == "Bob"), "Luke 12a not found");
-
-            //Assert.IsTrue(mockSermonContext.Object.GetSermons().Any(s => s.Title == "This Is A Test Sermon"
-            //                                                        && s.SermonPreacher.FirstName == "Bill"), "This is a Test Sermon not found");
         }
 
         [TestMethod, Ignore, Description("This may not be testable without being able to test update")]

@@ -13,21 +13,30 @@
 }
 @if ((ViewBag.preacherId ?? 0) > 0)
 {
-    <h4>
-        Current Preacher: @Model.First().SermonPreacher.FirstName @Model.First().SermonPreacher.LastName
-    </h4>
+    if (@Model.Any())
+    {
+        <h4>
+            Current Preacher: @Model.First().SermonPreacher.FirstName @Model.First().SermonPreacher.LastName
+        </h4>
+    }
 }
 @if ((ViewBag.seriesId ?? 0) > 0)
 {
-    <h4>
-        Current Series: @Model.First().SermonSeries.Title
-    </h4>
+    if (@Model.Any())
+    {
+        <h4>
+            Current Series: @Model.First().SermonSeries.Title
+        </h4>
+    }
 }
 @if ((ViewBag.locationId ?? 0) > 0)
 {
-    <h4>
-        Current Location: @Model.First().SermonLocation.Venue
-    </h4>
+    if (@Model.Any())
+    {
+        <h4>
+            Current Location: @Model.First().SermonLocation.Venue
+        </h4>
+    }
 }
 
 @using (Html.BeginForm("Index", "Sermon", FormMethod.Get, new { @class = "form-inline" }))

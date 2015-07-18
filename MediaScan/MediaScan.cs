@@ -44,7 +44,6 @@ namespace MediaScan
                 _context.SaveChanges();
             }
 
-
             foreach (var filePath in Directory.GetFiles(_mediaDirectory))
             {
                 string fileName = Path.GetFileName(filePath);
@@ -68,8 +67,9 @@ namespace MediaScan
                     //TODO: Also split from letters to numbers or numbers to letters
                     Regex regex = new Regex(@"
                         (?<=[A-Z])(?=[A-Z][a-z]) |
-                         (?<=[^A-Z])(?=[A-Z]) |
-                         (?<=[A-Za-z])(?=[^A-Za-z])", RegexOptions.IgnorePatternWhitespace);
+                        (?<=[^A-Z])(?=[A-Z]) |
+                        (?<=[A-Za-z])(?=[^A-Za-z]) |
+                        (?<=[^A-Za-z])(?=[A-Za-z])", RegexOptions.IgnorePatternWhitespace);
 
                     var preacherName = regex.Replace(underscoreSplitFileName[0], " ").Split(new char[] { ' ' });
                     string firstName = string.Empty;
