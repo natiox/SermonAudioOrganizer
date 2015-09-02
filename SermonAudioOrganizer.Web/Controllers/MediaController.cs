@@ -11,6 +11,7 @@ using PagedList;
 
 namespace SermonAudioOrganizer.Controllers
 {
+    [RequireHttps]
     public class MediaController : Controller
     {
         private SermonContext db = new SermonContext();

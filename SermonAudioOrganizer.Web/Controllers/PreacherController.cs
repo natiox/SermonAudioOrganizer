@@ -9,6 +9,7 @@ using SermonAudioOrganizer.Domain;
 
 namespace SermonAudioOrganizer.Controllers
 {
+    [RequireHttps]
     public class PreacherController : Controller
     {
         private SermonContext db = new SermonContext();

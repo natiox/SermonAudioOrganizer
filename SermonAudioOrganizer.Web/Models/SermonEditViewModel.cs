@@ -117,6 +117,7 @@ namespace SermonAudioOrganizer.Models
         /// i.e. 1, 2, 3, etc.
         /// </summary>
         [DisplayName("Section Index")]
+        [Range(0,500)]
         public int? SectionIndex { get; set; }
 
         /// <summary>

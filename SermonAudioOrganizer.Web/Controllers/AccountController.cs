@@ -11,7 +11,9 @@ using Microsoft.Owin.Security;
 using SermonAudioOrganizer.Models;
 
 namespace SermonAudioOrganizer.Controllers
+
 {
+    //TODO: authorize for admin users as needed
     [Authorize]
     public class AccountController : Controller
     {
