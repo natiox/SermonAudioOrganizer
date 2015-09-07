@@ -118,7 +118,10 @@
                             @Html.DisplayFor(modelItem => media.Type)
                         </td>
                         <td>
-                            @Html.ActionLink("Remove Media", "RemoveMedia", new { sermonId = Model.Id, mediaId = media.Id }, null)
+                            @if (User.IsInRole("admin"))
+                            {
+                                @Html.ActionLink("Remove Media", "RemoveMedia", new { sermonId = Model.Id, mediaId = media.Id }, null)
+                            }
                         </td>
                     </tr>
                 }

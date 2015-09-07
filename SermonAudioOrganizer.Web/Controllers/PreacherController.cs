@@ -19,7 +19,7 @@ namespace SermonAudioOrganizer.Controllers
 
         public ActionResult Index()
         {
-            return View(db.Preachers.ToList());
+            return View(db.Preachers.OrderBy(p => p.LastName).ToList());
         }
         
         //

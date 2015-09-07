@@ -6,9 +6,12 @@
 
 <h2>Sections</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+@if (User.IsInRole("admin"))
+{
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+}
 <table class="table">
     <tr>
         <th>
@@ -23,9 +26,13 @@
             @Html.DisplayFor(modelItem => item.Title)
         </td>
         <td>            
-            @Html.ActionLink("Sermons", "Index", "Sermon", new { sectionId = item.Id }, null) |
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+            @Html.ActionLink("Sermons", "Index", "Sermon", new { sectionId = item.Id }, null)
+            @if (User.IsInRole("admin"))
+            {
+                @:|
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) @:|
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            }
         </td>
     </tr>
 }

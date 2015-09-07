@@ -13,6 +13,7 @@ using PagedList;
 namespace SermonAudioOrganizer.Controllers
 {
     [RequireHttps]
+    [Authorize(Roles = "admin")]
     public class SermonController : Controller
     {
         private SermonContext _sermonContext;
@@ -55,6 +56,7 @@ namespace SermonAudioOrganizer.Controllers
 
         //
         // GET: /Sermon/
+        [AllowAnonymous]
         public ActionResult Index(int? page, int? preacherId, int? seriesId, int? sectionId, int? locationId, string searchTitle = "")
         {
             var sermons = from s in _sermonContext.Sermons
@@ -89,6 +91,7 @@ namespace SermonAudioOrganizer.Controllers
 
         //
         // TODO: GET: /Sermon/Details/5
+        [AllowAnonymous]
         public ActionResult Details(int id = 0)
         {
             Sermon sermon = _sermonContext.Sermons.Find(id);

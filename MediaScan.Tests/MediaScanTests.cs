@@ -128,7 +128,7 @@ namespace MediaScan.Tests
                     Id = 1,
                     City = "Albuquerque",
                     State = "NM",
-                    Venue = "Church of Christ"
+                    Venue = "Church of Christ on Vermont Street"
                 }
             }.AsQueryable();
             mockLocationSet.As<IQueryable<Location>>().Setup(m => m.Provider).Returns(locationList.Provider);
@@ -190,7 +190,7 @@ namespace MediaScan.Tests
                                                                     && s.SermonPreacher.LastName == "Smith"
                                                                     && s.SermonLocation.City == "Albuquerque"
                                                                     && s.SermonLocation.State == "NM"
-                                                                    && s.SermonLocation.Venue == "Church of Christ"
+                                                                    && s.SermonLocation.Venue == "Church of Christ on Vermont Street"
                                                                     && string.IsNullOrEmpty(s.Comment)
                                                                     && string.IsNullOrEmpty(s.Passages))), Times.Exactly(1), "Missing The Test Sermon.");
 

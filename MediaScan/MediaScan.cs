@@ -34,12 +34,12 @@ namespace MediaScan
             if (locations.Any())
             {
                 defaultLocation = locations
-                .Where(l => l.City == "Albuquerque" && l.Venue == "Church of Christ")
+                .Where(l => l.City == "Albuquerque" && l.Venue == "Church of Christ on Vermont Street")
                 .FirstOrDefault();
             }
             else
-            { 
-                defaultLocation = new Location() { City = "Albuquerque", State = "NM", Venue = "Church of Christ" };
+            {
+                defaultLocation = new Location() { City = "Albuquerque", State = "NM", Venue = "Church of Christ on Vermont Street" };
                 _context.Locations.Add(defaultLocation);
                 _context.SaveChanges();
             }

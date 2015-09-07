@@ -6,34 +6,41 @@
 
 <h2>Preachers</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+@if (User.IsInRole("admin"))
+{
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+}
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.FirstName)
+            @Html.DisplayNameFor(model => model.LastName)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.LastName)
+            @Html.DisplayNameFor(model => model.FirstName)
         </th>
         <th></th>
     </tr>
 
-@foreach (var preacher in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => preacher.FirstName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => preacher.LastName)
-        </td>
-        <td>
-            @Html.ActionLink("Sermons", "Index", "Sermon", new { preacherId = preacher.Id }, null) |
-            @Html.ActionLink("Edit", "Edit", new { id = preacher.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id = preacher.Id })
-        </td>
-    </tr>
+    @foreach (var preacher in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => preacher.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => preacher.FirstName)
+            </td>
+            <td>
+                @Html.ActionLink("Sermons", "Index", "Sermon", new { preacherId = preacher.Id }, null)
+                @if (User.IsInRole("admin"))
+                {
+                    @:|
+                    @Html.ActionLink("Edit", "Edit", new { id = preacher.Id }) @:|
+                    @Html.ActionLink("Delete", "Delete", new { id = preacher.Id })
+                }
+            </td>
+        </tr>
 }
 
 </table>
