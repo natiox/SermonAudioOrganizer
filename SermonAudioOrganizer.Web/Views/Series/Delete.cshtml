@@ -10,12 +10,10 @@
 <fieldset>
     <legend>Series</legend>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Title)
-    </div>
-    <div class="display-field">
+    <p>
+        @Html.LabelFor(model => model.Title)
         @Html.DisplayFor(model => model.Title)
-    </div>
+    </p>
 </fieldset>
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()

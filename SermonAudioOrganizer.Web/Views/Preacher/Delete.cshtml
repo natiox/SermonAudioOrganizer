@@ -10,19 +10,14 @@
 <fieldset>
     <legend>Preacher</legend>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.FirstName)
-    </div>
-    <div class="display-field">
+    <p>
+        @Html.LabelFor(model => model.FirstName)
         @Html.DisplayFor(model => model.FirstName)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.LastName)
-    </div>
-    <div class="display-field">
+    </p>
+    <p>
+        @Html.LabelFor(model => model.LastName)
         @Html.DisplayFor(model => model.LastName)
-    </div>
+    </p>
 </fieldset>
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()

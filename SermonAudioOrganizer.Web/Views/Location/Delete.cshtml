@@ -10,26 +10,18 @@
 <fieldset>
     <legend>Location</legend>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.City)
-    </div>
-    <div class="display-field">
+    <p>
+        @Html.LabelFor(model => model.City)
         @Html.DisplayFor(model => model.City)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.State)
-    </div>
-    <div class="display-field">
+    </p>
+    <p>
+        @Html.LabelFor(model => model.State)
         @Html.DisplayFor(model => model.State)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Venue)
-    </div>
-    <div class="display-field">
+    </p>
+    <p>
+        @Html.LabelFor(model => model.Venue)
         @Html.DisplayFor(model => model.Venue)
-    </div>
+    </p>
 </fieldset>
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()

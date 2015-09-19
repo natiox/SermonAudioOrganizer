@@ -10,56 +10,38 @@
 <fieldset>
     <legend>Sermon</legend>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Title)
-    </div>
-    <div class="display-field">
+    <p>
+        @Html.LabelFor(model => model.Title)
         @Html.DisplayFor(model => model.Title)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.RecordingDate)
-    </div>
-    <div class="display-field">
+    </p>
+    <p>
+        @Html.LabelFor(model => model.RecordingDate)
         @Html.DisplayFor(model => model.RecordingDate)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Topic)
-    </div>
-    <div class="display-field">
+    </p>
+    <p>
+        @Html.LabelFor(model => model.Topic)
         @Html.DisplayFor(model => model.Topic)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Comment)
-    </div>
-    <div class="display-field">
+    </p>
+    <p>
+        @Html.LabelFor(model => model.Comment)
         @Html.DisplayFor(model => model.Comment)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Passages)
-    </div>
-    <div class="display-field">
+    </p>
+    <p>
+        @Html.LabelFor(model => model.Passages)
         @Html.DisplayFor(model => model.Passages)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.SeriesIndex)
-    </div>
-    <div class="display-field">
+    </p>
+    <p>
+        @Html.LabelFor(model => model.SeriesIndex)
         @Html.DisplayFor(model => model.SeriesIndex)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.SectionIndex)
-    </div>
-    <div class="display-field">
+    </p>
+    <p>
+        @Html.LabelFor(model => model.SectionIndex)
         @Html.DisplayFor(model => model.SectionIndex)
-    </div>
+    </p>
+
 </fieldset>
-@using (Html.BeginForm()) {
+@using (Html.BeginForm())
+{
     @Html.AntiForgeryToken()
     <p>
         <input type="submit" value="Delete" class="btn btn-default" /> |

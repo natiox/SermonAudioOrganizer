@@ -4,11 +4,12 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace SermonAudioOrganizer.Web.Tests
 {
     [TestClass]
-    public class UnitTest1
+    public class WebUnitTest
     {
-        [TestMethod]
-        public void TestMethod1()
-        {
-        }
+        //[TestMethod]
+        //public void SermonIndex_DisplaysListOfSermons()
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }

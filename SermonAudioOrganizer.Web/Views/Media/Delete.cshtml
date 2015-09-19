@@ -10,12 +10,10 @@
 <fieldset>
     <legend>Media</legend>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Name)
-    </div>
-    <div class="display-field">
+    <p>
+        @Html.LabelFor(model => model.Name)
         @Html.DisplayFor(model => model.Name)
-    </div>
+    </p>
 </fieldset>
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
